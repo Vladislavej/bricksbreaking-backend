@@ -42,21 +42,10 @@ public class Field  {
         }
 
         TileColor tileColor = tiles[y][x].getColor();
+        tiles[y][x].breakNeighbours(x, y, this);
         tiles[y][x] = null;
-        checkNeighbours(x, y, tileColor);
         System.out.println("Destroyed brick at (" + x + ", " + y + ") of color: " + tileColor);
         checkGameState();
-    }
-
-    private void checkNeighbours(int x, int y, TileColor tileColor) {
-        //left
-        if (x - 1 >= 0 && tiles[y][x - 1] != null && tiles[y][x - 1].getColor() == tileColor) { breakTile(x - 1, y); }
-        //right
-        if (x + 1 < cols && tiles[y][x + 1] != null && tiles[y][x + 1].getColor() == tileColor) { breakTile(x + 1, y); }
-        //up
-        if (y - 1 >= 0 && tiles[y - 1][x] != null && tiles[y - 1][x].getColor() == tileColor) { breakTile(x, y - 1); }
-        //down
-        if (y + 1 < rows && tiles[y + 1][x] != null && tiles[y + 1][x].getColor() == tileColor) { breakTile(x, y + 1); }
     }
 
     public void unite() {

@@ -23,9 +23,9 @@ public class ConsoleUI {
         }
         System.out.println();
 
-        System.out.print("  X ");
+        System.out.print("    ");
         for (int j = 0; j < cols; j++) {
-            System.out.print("- ");
+            System.out.print("_ ");
         }
         System.out.println();
 
