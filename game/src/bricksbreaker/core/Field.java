@@ -6,16 +6,18 @@ public class Field  {
     private int rows;
     private int cols;
     private Brick[][] bricks;
+    private GameState gameState;
     public Field(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         bricks = new Brick[rows][cols];
+        this.gameState = GameState.PLAYING;
     }
     public Brick[][] getBricks() {
         return bricks;
     }
 
-    public void generateField() {
+    public void generate() {
         Random random = new Random();
         BrickColor[] colors = BrickColor.values();
         for (int i = 0; i < rows; i++) {
@@ -46,11 +48,28 @@ public class Field  {
         if (y + 1 < cols && bricks[x][y + 1] != null && bricks[x][y + 1].getColor() == brickColor) { breakBrick(x, y + 1); }
     }
 
+    public void unite() {
+        for (int i = 0; i < rows - 1; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(bricks[i][j] != null && bricks[i+1][j] == null) {
+                    bricks[i+1][j] = bricks[i][j];
+                    bricks[i][j] = null;
+                    unite();
+                }
+            }
+        }
+    }
+
+
     public int getRows() {
         return rows;
     }
 
     public int getCols() {
         return cols;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }

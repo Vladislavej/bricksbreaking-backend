@@ -1,6 +1,7 @@
 package bricksbreaker.consoleui;
 
 import bricksbreaker.core.Field;
+import bricksbreaker.core.GameState;
 
 public class ConsoleUI {
     private Field field;
@@ -9,7 +10,7 @@ public class ConsoleUI {
         this.field = field;
         this.score = 0;
     }
-    public void drawField() {
+    public void show() {
         System.out.println();
         for (int i = 0; i < field.getRows(); i++) {
             for (int j = 0; j < field.getCols(); j++) {
@@ -22,4 +23,19 @@ public class ConsoleUI {
         }
         System.out.println();
     }
+
+//    public void play(Field field) {
+//        this.field = field;
+//        do {
+//            show();
+//        } while(field.getGameState() == GameState.PLAYING);
+//
+//        show();
+//
+//        if(field.getGameState() == GameState.SOLVED) {
+//            System.out.println("Solved!");
+//        } else if(field.getGameState() == GameState.FAILED){
+//            System.out.println("Failed!");
+//        }
+//    }
 }

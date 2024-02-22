@@ -8,10 +8,12 @@ public class Main {
         Field field = new Field(5,10);
         ConsoleUI consoleUI = new ConsoleUI(field);
 
-        consoleUI.drawField();
-        field.generateField();
-        consoleUI.drawField();
+        consoleUI.show();
+        field.generate();
+        consoleUI.show();
         field.breakBrick(2,2);
-        consoleUI.drawField();
+        consoleUI.show();
+        field.unite();
+        consoleUI.show();
     }
 }
