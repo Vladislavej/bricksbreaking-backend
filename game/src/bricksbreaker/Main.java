@@ -8,14 +8,6 @@ public class Main {
         Field field = new Field(5,10, 3);
         ConsoleUI consoleUI = new ConsoleUI();
 
-//        consoleUI.show();
-//        field.generate();
-//        consoleUI.show();
-//        field.breakTile(2,2);
-//        consoleUI.show();
-//        field.unite();
-//        consoleUI.show();
-
         field.generate();
         consoleUI.play(field);
     }

@@ -31,14 +31,14 @@ public class Field  {
         System.out.println("Generated a new tile field");
     }
 
-    public boolean breakTile(int x, int y) {
+    public void breakTile(int x, int y) {
         if (x < 0 || x >= cols || y < 0 || y >= rows) {
             System.out.println("Invalid tile coordinates: (" + x + ", " + y + ")");
-            return false;
+            return;
         }
         if (tiles[y][x] == null) {
             System.out.println("No tile found at coordinates: (" + x + ", " + y + ")");
-            return false;
+            return;
         }
 
         TileColor tileColor = tiles[y][x].getColor();
@@ -46,10 +46,7 @@ public class Field  {
         checkNeighbours(x, y, tileColor);
         System.out.println("Destroyed brick at (" + x + ", " + y + ") of color: " + tileColor);
         checkGameState();
-        return true;
     }
-
-
 
     private void checkNeighbours(int x, int y, TileColor tileColor) {
         //left
@@ -73,7 +70,6 @@ public class Field  {
             }
         }
     }
-
 
     public int getRows() {
         return rows;

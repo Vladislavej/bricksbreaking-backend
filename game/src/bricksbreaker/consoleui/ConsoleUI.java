@@ -2,6 +2,7 @@ package bricksbreaker.consoleui;
 
 import bricksbreaker.core.Field;
 import bricksbreaker.core.GameState;
+import bricksbreaker.core.Tile;
 
 import java.util.Scanner;
 
@@ -13,12 +14,30 @@ public class ConsoleUI {
         this.score = 0;
     }
     public void show() {
+        int rows = field.getRows();
+        int cols = field.getCols();
+
+        System.out.print("    ");
+        for (int j = 0; j < cols; j++) {
+            System.out.print(j + " ");
+        }
         System.out.println();
-        for (int i = 0; i < field.getRows(); i++) {
-            for (int j = 0; j < field.getCols(); j++) {
-                if(field.getTiles()[i][j] != null ) {
-                    System.out.print(field.getTiles()[i][j].getColor());
-                } else { System.out.print('-'); }
+
+        System.out.print("  X ");
+        for (int j = 0; j < cols; j++) {
+            System.out.print("- ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < rows; i++) {
+            System.out.print(i + " | ");
+            for (int j = 0; j < cols; j++) {
+                Tile tile = field.getTiles()[i][j];
+                if (tile != null) {
+                    System.out.print(tile.getColor());
+                } else {
+                    System.out.print('-');
+                }
                 System.out.print(' ');
             }
             System.out.println();
