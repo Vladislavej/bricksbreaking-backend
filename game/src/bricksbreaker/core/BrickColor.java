@@ -12,8 +12,8 @@ public enum BrickColor {
 
     BrickColor(int r, int g, int b, int score) {
         this.r = r;
-        this.g = r;
-        this.b = r;
+        this.g = g;
+        this.b = b;
         this.score = score;
     }
 

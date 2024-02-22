@@ -11,7 +11,7 @@ public class Main {
         consoleUI.drawField();
         field.generateField();
         consoleUI.drawField();
-        field.breakTile(2,2);
+        field.breakBrick(2,2);
         consoleUI.drawField();
     }
 }
