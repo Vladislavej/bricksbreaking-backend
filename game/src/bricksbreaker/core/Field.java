@@ -7,11 +7,13 @@ public class Field  {
     private int cols;
     private Tile[][] tiles;
     private GameState gameState;
-    public Field(int rows, int cols) {
+    private int lives;
+    public Field(int rows, int cols, int lives) {
         this.rows = rows;
         this.cols = cols;
         tiles = new Tile[rows][cols];
         this.gameState = GameState.PLAYING;
+        this.lives = lives;
     }
     public Tile[][] getTiles() {
         return tiles;
@@ -30,23 +32,34 @@ public class Field  {
     }
 
     public boolean breakTile(int x, int y) {
-        if(tiles[x][y] == null) { return false; }
-        TileColor tileColor = tiles[x][y].getColor();
-        tiles[x][y] = null;
-        checkNeighbours(x,y, tileColor);
-        System.out.println("Destroyed brick at " + x + " " + y + " of color = " + tileColor);
+        if (x < 0 || x >= cols || y < 0 || y >= rows) {
+            System.out.println("Invalid tile coordinates: (" + x + ", " + y + ")");
+            return false;
+        }
+        if (tiles[y][x] == null) {
+            System.out.println("No tile found at coordinates: (" + x + ", " + y + ")");
+            return false;
+        }
+
+        TileColor tileColor = tiles[y][x].getColor();
+        tiles[y][x] = null;
+        checkNeighbours(x, y, tileColor);
+        System.out.println("Destroyed brick at (" + x + ", " + y + ") of color: " + tileColor);
+        checkGameState();
         return true;
     }
 
-    private void checkNeighbours(int x , int y, TileColor tileColor) {
+
+
+    private void checkNeighbours(int x, int y, TileColor tileColor) {
         //left
-        if (y - 1 >= 0 && tiles[x][y - 1] != null && tiles[x][y - 1].getColor() == tileColor) { breakTile(x, y - 1); }
-        //top
-        if (x - 1 >= 0 && tiles[x - 1][y] != null && tiles[x - 1][y].getColor() == tileColor) { breakTile(x - 1, y); }
+        if (x - 1 >= 0 && tiles[y][x - 1] != null && tiles[y][x - 1].getColor() == tileColor) { breakTile(x - 1, y); }
         //right
-        if (x + 1 < rows && tiles[x + 1][y] != null && tiles[x + 1][y].getColor() == tileColor) { breakTile(x + 1, y); }
-        //bottom
-        if (y + 1 < cols && tiles[x][y + 1] != null && tiles[x][y + 1].getColor() == tileColor) { breakTile(x, y + 1); }
+        if (x + 1 < cols && tiles[y][x + 1] != null && tiles[y][x + 1].getColor() == tileColor) { breakTile(x + 1, y); }
+        //up
+        if (y - 1 >= 0 && tiles[y - 1][x] != null && tiles[y - 1][x].getColor() == tileColor) { breakTile(x, y - 1); }
+        //down
+        if (y + 1 < rows && tiles[y + 1][x] != null && tiles[y + 1][x].getColor() == tileColor) { breakTile(x, y + 1); }
     }
 
     public void unite() {
@@ -74,4 +87,16 @@ public class Field  {
         return gameState;
     }
 
+    public void checkGameState() {
+        if(lives <= 0) {
+            gameState = GameState.FAILED;
+            return;
+        }
+        for (int i = 0; i < rows - 1; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(tiles[i][j] != null) { return; }
+            }
+        }
+        gameState = GameState.SOLVED;
+    }
 }
