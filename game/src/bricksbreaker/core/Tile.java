@@ -1,14 +1,15 @@
 package bricksbreaker.core;
 
-public class Brick {
-    private BrickColor color;
+public class Tile {
+    private TileColor color;
     private int brickScore;
-    public Brick(BrickColor color) {
+
+    public Tile(TileColor color) {
         this.color = color;
         brickScore = this.getColor().getScore();
     }
 
-    public BrickColor getColor() {
+    public TileColor getColor() {
         return color;
     }
 }

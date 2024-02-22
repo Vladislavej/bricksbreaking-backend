@@ -1,7 +1,6 @@
 package bricksbreaker.consoleui;
 
 import bricksbreaker.core.Field;
-import bricksbreaker.core.GameState;
 
 public class ConsoleUI {
     private Field field;
@@ -14,8 +13,8 @@ public class ConsoleUI {
         System.out.println();
         for (int i = 0; i < field.getRows(); i++) {
             for (int j = 0; j < field.getCols(); j++) {
-                if(field.getBricks()[i][j] != null ) {
-                    System.out.print(field.getBricks()[i][j].getColor());
+                if(field.getTiles()[i][j] != null ) {
+                    System.out.print(field.getTiles()[i][j].getColor());
                 } else { System.out.print('-'); }
                 System.out.print(' ');
             }

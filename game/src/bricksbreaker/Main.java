@@ -11,7 +11,7 @@ public class Main {
         consoleUI.show();
         field.generate();
         consoleUI.show();
-        field.breakBrick(2,2);
+        field.breakTile(2,2);
         consoleUI.show();
         field.unite();
         consoleUI.show();

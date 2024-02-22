@@ -5,55 +5,56 @@ import java.util.Random;
 public class Field  {
     private int rows;
     private int cols;
-    private Brick[][] bricks;
+    private Tile[][] tiles;
     private GameState gameState;
     public Field(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
-        bricks = new Brick[rows][cols];
+        tiles = new Tile[rows][cols];
         this.gameState = GameState.PLAYING;
     }
-    public Brick[][] getBricks() {
-        return bricks;
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     public void generate() {
         Random random = new Random();
-        BrickColor[] colors = BrickColor.values();
+        TileColor[] colors = TileColor.values();
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                BrickColor randomColor = colors[random.nextInt(colors.length)];
-                this.bricks[i][j] = new Brick(randomColor);
+                TileColor randomColor = colors[random.nextInt(colors.length)];
+                this.tiles[i][j] = new Tile(randomColor);
             }
         }
+        System.out.println("Generated a new tile field");
     }
 
-    public boolean breakBrick(int x, int y) {
-        if(bricks[x][y] == null) { return false; }
-        BrickColor brickColor = bricks[x][y].getColor();
-        bricks[x][y] = null;
-        checkNeighbours(x,y, brickColor);
-        System.out.println("Destroyed brick at " + x + " " + y + " of color = " + brickColor);
+    public boolean breakTile(int x, int y) {
+        if(tiles[x][y] == null) { return false; }
+        TileColor tileColor = tiles[x][y].getColor();
+        tiles[x][y] = null;
+        checkNeighbours(x,y, tileColor);
+        System.out.println("Destroyed brick at " + x + " " + y + " of color = " + tileColor);
         return true;
     }
 
-    private void checkNeighbours(int x , int y, BrickColor brickColor) {
+    private void checkNeighbours(int x , int y, TileColor tileColor) {
         //left
-        if (y - 1 >= 0 && bricks[x][y - 1] != null && bricks[x][y - 1].getColor() == brickColor) { breakBrick(x, y - 1); }
+        if (y - 1 >= 0 && tiles[x][y - 1] != null && tiles[x][y - 1].getColor() == tileColor) { breakTile(x, y - 1); }
         //top
-        if (x - 1 >= 0 && bricks[x - 1][y] != null && bricks[x - 1][y].getColor() == brickColor) { breakBrick(x - 1, y); }
+        if (x - 1 >= 0 && tiles[x - 1][y] != null && tiles[x - 1][y].getColor() == tileColor) { breakTile(x - 1, y); }
         //right
-        if (x + 1 < rows && bricks[x + 1][y] != null && bricks[x + 1][y].getColor() == brickColor) { breakBrick(x + 1, y); }
+        if (x + 1 < rows && tiles[x + 1][y] != null && tiles[x + 1][y].getColor() == tileColor) { breakTile(x + 1, y); }
         //bottom
-        if (y + 1 < cols && bricks[x][y + 1] != null && bricks[x][y + 1].getColor() == brickColor) { breakBrick(x, y + 1); }
+        if (y + 1 < cols && tiles[x][y + 1] != null && tiles[x][y + 1].getColor() == tileColor) { breakTile(x, y + 1); }
     }
 
     public void unite() {
         for (int i = 0; i < rows - 1; i++) {
             for (int j = 0; j < cols; j++) {
-                if(bricks[i][j] != null && bricks[i+1][j] == null) {
-                    bricks[i+1][j] = bricks[i][j];
-                    bricks[i][j] = null;
+                if(tiles[i][j] != null && tiles[i+1][j] == null) {
+                    tiles[i+1][j] = tiles[i][j];
+                    tiles[i][j] = null;
                     unite();
                 }
             }
@@ -72,4 +73,5 @@ public class Field  {
     public GameState getGameState() {
         return gameState;
     }
+
 }
