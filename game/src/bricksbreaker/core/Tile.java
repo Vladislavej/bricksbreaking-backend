@@ -1,17 +1,17 @@
 package bricksbreaker.core;
 
 public class Tile {
-    private TileColor color;
+    private TileInfo color;
     private int brickScore;
     private boolean visited;
 
-    public Tile(TileColor color) {
+    public Tile(TileInfo color) {
         this.color = color;
         brickScore = this.getColor().getScore();
         visited = false;
     }
 
-    public TileColor getColor() {
+    public TileInfo getColor() {
         return color;
     }
 
@@ -37,5 +37,9 @@ public class Tile {
         if (y + 1 < field.getRows() && tiles[y + 1][x] != null && tiles[y + 1][x].getColor() == color) {
             field.breakTile(x, y + 1);
         }
+    }
+
+    public int getBrickScore() {
+        return brickScore;
     }
 }
