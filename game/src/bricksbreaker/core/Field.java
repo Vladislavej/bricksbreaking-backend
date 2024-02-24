@@ -47,8 +47,6 @@ public class Field  {
         tiles[y][x].breakNeighbours(x, y, this);
         tiles[y][x] = null;
         brokenBricks += 1;
-
-        checkGameState();
     }
 
     public void unite() {

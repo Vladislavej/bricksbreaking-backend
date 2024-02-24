@@ -55,8 +55,8 @@ public class ConsoleUI {
             showField();
             handleInput();
             field.unite();
-            calculateStats();
             showStats();
+            field.checkGameState();
         } while(field.getGameState() == GameState.PLAYING);
 
         showField();
@@ -86,6 +86,7 @@ public class ConsoleUI {
     }
 
     private void showStats() {
+        calculateStats();
         System.out.print("Score: " + score + " | Lives: " + field.getLives());
     }
 
@@ -93,7 +94,6 @@ public class ConsoleUI {
         score += field.getScoreThisMove() * field.getBrokenBricks();
 
         if(field.getBrokenBricks() == 1) { field.setLives(field.getLives() - 1); }
-        field.checkGameState();
 
         field.setBrokenBricks(0);
         field.setScoreThisMove(0);
