@@ -27,6 +27,7 @@ public class Field  {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 TileInfo randomColor = colors[random.nextInt(colors.length)];
+                while(randomColor == TileInfo.NONE) { randomColor = colors[random.nextInt(colors.length)]; }
                 this.tiles[i][j] = new Tile(randomColor);
             }
         }
@@ -44,13 +45,13 @@ public class Field  {
         }
 
         setScoreThisMove(getScoreThisMove() + tiles[y][x].getBrickScore());
-        tiles[y][x].breakNeighbours(x, y, this);
+        tiles[y][x].use(x, y, this);
         tiles[y][x] = null;
         brokenBricks += 1;
     }
 
     public void unite() {
-        for (int i = 0; i < rows - 1; i++) {
+        for (int i = 0; i < rows - 1; i++) { //gravitacia kociek
             for (int j = 0; j < cols; j++) {
                 if(tiles[i][j] != null && tiles[i+1][j] == null) {
                     tiles[i+1][j] = tiles[i][j];

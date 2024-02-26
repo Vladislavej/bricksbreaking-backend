@@ -11,6 +11,7 @@ public class ConsoleUI {
     private Field field;
     private Scanner scanner;
     private int score;
+    private static final String ANSI_RESET = "\u001B[0m";
     public ConsoleUI() {
 
     }
@@ -37,13 +38,13 @@ public class ConsoleUI {
             for (int j = 0; j < cols; j++) {
                 Tile tile = field.getTiles()[i][j];
                 if (tile != null) {
-                    System.out.print(tile.getColor());
+                    System.out.print(tile.getColor().getBcolor() + tile.getColor().getSname());
                 } else {
-                    System.out.print('-');
+                    System.out.print(ANSI_RESET + '-');
                 }
                 System.out.print(' ');
             }
-            System.out.println();
+            System.out.println(ANSI_RESET);
         }
         System.out.println();
     }

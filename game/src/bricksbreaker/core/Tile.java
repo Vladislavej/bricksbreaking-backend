@@ -16,9 +16,6 @@ public class Tile {
     }
 
     public void breakNeighbours(int x, int y, Field field) {
-        if (visited) return;
-        visited = true;
-
         Tile[][] tiles = field.getTiles();
 
         //left
@@ -37,6 +34,11 @@ public class Tile {
         if (y + 1 < field.getRows() && tiles[y + 1][x] != null && tiles[y + 1][x].getColor() == color) {
             field.breakTile(x, y + 1);
         }
+    }
+    public void use(int x, int y, Field field) {
+        if (visited) return;
+        visited = true;
+        breakNeighbours(x, y, field);
     }
 
     public int getBrickScore() {

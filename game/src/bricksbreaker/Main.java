@@ -5,7 +5,7 @@ import bricksbreaker.core.Field;
 
 public class Main {
     public static void main(String[] args) {
-        Field field = new Field(3,5, 3);
+        Field field = new Field(5,10, 3);
         ConsoleUI consoleUI = new ConsoleUI();
 
         consoleUI.play(field);
