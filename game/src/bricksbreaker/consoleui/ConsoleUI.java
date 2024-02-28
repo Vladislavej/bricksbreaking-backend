@@ -23,13 +23,13 @@ public class ConsoleUI {
 
         System.out.print("    ");
         for (int j = 0; j < cols; j++) {
-            System.out.print(j + " ");
+            System.out.print(" " + j + " ");
         }
         System.out.println();
 
-        System.out.print("   ");
+        System.out.print("    ");
         for (int j = 0; j < cols; j++) {
-            System.out.print("--");
+            System.out.print(" _ ");
         }
         System.out.println();
 
@@ -38,11 +38,10 @@ public class ConsoleUI {
             for (int j = 0; j < cols; j++) {
                 Tile tile = field.getTiles()[i][j];
                 if (tile != null) {
-                    System.out.print(tile.getColor().getBcolor() + tile.getColor().getSname());
+                    System.out.print(tile.getColor().getTcolor() + tile.getColor().getBcolor() + " " + tile.getColor().getSname() + " ");
                 } else {
-                    System.out.print(ANSI_RESET + '-');
+                    System.out.print(ANSI_RESET + " - ");
                 }
-                System.out.print(' ');
             }
             System.out.println(ANSI_RESET);
         }
