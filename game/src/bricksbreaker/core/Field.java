@@ -51,12 +51,37 @@ public class Field  {
     }
 
     public void unite() {
-        for (int i = 0; i < rows - 1; i++) { //gravitacia kociek
+        for (int i = 0; i < rows - 1; i++) { //gravity
             for (int j = 0; j < cols; j++) {
                 if(tiles[i][j] != null && tiles[i+1][j] == null) {
                     tiles[i+1][j] = tiles[i][j];
                     tiles[i][j] = null;
                     unite();
+                }
+            }
+        }
+        for (int j = 0; j < cols; j++) {
+            if (tiles[rows - 1][j] == null) {
+                if (j < cols / 2) {
+                    // gap in the left
+                    for (int k = j + 1; k < cols; k++) {
+                        for (int i = 0; i < rows; i++) {
+                            if (tiles[i][k] != null) {
+                                tiles[i][k - 1] = tiles[i][k];
+                                tiles[i][k] = null;
+                            }
+                        }
+                    }
+                } else {
+                    // gap in the right
+                    for (int k = j - 1; k >= 0; k--) {
+                        for (int i = 0; i < rows; i++) {
+                            if (tiles[i][k] != null) {
+                                tiles[i][k + 1] = tiles[i][k];
+                                tiles[i][k] = null;
+                            }
+                        }
+                    }
                 }
             }
         }

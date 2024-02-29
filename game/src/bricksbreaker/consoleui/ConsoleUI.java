@@ -29,7 +29,7 @@ public class ConsoleUI {
 
         System.out.print("    ");
         for (int j = 0; j < cols; j++) {
-            System.out.print(" _ ");
+            System.out.print(" — ");
         }
         System.out.println();
 
@@ -67,14 +67,14 @@ public class ConsoleUI {
             System.out.println("Failed!");
         }
 
-//        System.out.println("Do you want to play again? (yes/no)");
-//        if(scanner.nextLine() == "yes") {
-//            field.generate();
-//            field.setGameState(GameState.PLAYING);
-//            play(field);
-//        } else if (scanner.next() == "n") {
-//            System.out.println("Thank you for playing!");
-//        }
+        System.out.println("Do you want to play again? (yes/no)");
+        String input = scanner.nextLine(); //required even tho idea says no lol otherwise program just terminates
+        input = scanner.nextLine();
+        if(input.equals("yes")) {
+            play(field);
+        } else if (input.equals("no")) {
+            System.out.println("Thank you for playing!");
+        }
     }
 
     private void handleInput() {
@@ -104,5 +104,6 @@ public class ConsoleUI {
         field.setBrokenBricks(0);
         field.setScoreThisMove(0);
         score = 0;
+        field.setGameState(GameState.PLAYING);
     }
 }
