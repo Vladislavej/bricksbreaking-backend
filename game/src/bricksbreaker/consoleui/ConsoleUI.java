@@ -69,11 +69,17 @@ public class ConsoleUI {
 
         System.out.println("Do you want to play again? (yes/no)");
         String input = scanner.nextLine(); //required even tho idea says no lol otherwise program just terminates
-        input = scanner.nextLine();
-        if(input.equals("yes")) {
-            play(field);
-        } else if (input.equals("no")) {
-            System.out.println("Thank you for playing!");
+        boolean validAnswer = false;
+        while(!validAnswer) {
+            input = scanner.nextLine();
+            if (input.equals("yes")) {
+                play(field);
+            } else if (input.equals("no")) {
+                System.out.println("Thank you for playing!");
+                validAnswer = true;
+            } else {
+                System.out.println("Didnt get a valid answer!");
+            }
         }
     }
 
