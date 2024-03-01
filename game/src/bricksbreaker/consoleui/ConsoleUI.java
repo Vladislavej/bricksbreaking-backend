@@ -4,7 +4,6 @@ import bricksbreaker.core.Field;
 import bricksbreaker.core.GameState;
 import bricksbreaker.core.Tile;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -12,8 +11,19 @@ public class ConsoleUI {
     private Scanner scanner;
     private int score;
     private static final String ANSI_RESET = "\u001B[0m";
+    private int numColors;
     public ConsoleUI() {
+        scanner = new Scanner(System.in);
 
+        System.out.print("Enter field x dimension: ");
+        int x = scanner.nextInt();
+        System.out.print("Enter field y dimension: ");
+        int y = scanner.nextInt();
+        System.out.print("Enter how many colors you want: ");
+        numColors = scanner.nextInt();
+
+        field = new Field(x,y,3);
+        play(field);
     }
     private void showField() {
         System.out.println();
@@ -105,7 +115,7 @@ public class ConsoleUI {
         field.setScoreThisMove(0);
     }
     private void prepareGame() {
-        field.generate();
+        field.generate(numColors);
         field.setLives(3);
         field.setBrokenBricks(0);
         field.setScoreThisMove(0);

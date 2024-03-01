@@ -1,5 +1,8 @@
 package bricksbreaker.core;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Field  {
@@ -21,17 +24,23 @@ public class Field  {
         return tiles;
     }
 
-    public void generate() {
+    /**
+     * Generates new bricks in the existing field.
+     * @param numColors amount of different colors you want to generate.
+     */
+    public void generate(int numColors) {
         Random random = new Random();
-        TileInfo[] colors = TileInfo.values();
+
+        List<TileInfo> colors = Arrays.asList(TileInfo.values());
+        TileInfo[] selectedColors = Arrays.copyOfRange(colors.toArray(new TileInfo[0]), 0, numColors);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                TileInfo randomColor = colors[random.nextInt(colors.length)];
-                while(randomColor == TileInfo.NONE) { randomColor = colors[random.nextInt(colors.length)]; }
+                TileInfo randomColor = selectedColors[random.nextInt(selectedColors.length)];
                 this.tiles[i][j] = new Tile(randomColor);
             }
         }
-        System.out.println("Generated a new tile field");
+        System.out.println("Generated a new tile field with " + numColors + " different colors!");
     }
 
     public void breakTile(int x, int y) {
