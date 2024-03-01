@@ -13,7 +13,7 @@ public enum TileInfo {
     CYAN(30, 'C', "\u001B[46m", "\u001B[30m"),
     WHITE(35, 'W', "\u001B[47m", "\u001B[30m"),
 
-    NONE(0,' ', "\u001B[40m", "\u001B[37m");
+    NONE(0,'X', "\u001B[40m", "\u001B[37m");
 
     private final int score;
     private final char sname;

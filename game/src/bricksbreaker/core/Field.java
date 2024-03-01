@@ -37,6 +37,7 @@ public class Field  {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 TileInfo randomColor = selectedColors[random.nextInt(selectedColors.length)];
+                while(randomColor == TileInfo.NONE) { randomColor = selectedColors[random.nextInt(selectedColors.length)]; }
                 this.tiles[i][j] = new Tile(randomColor);
             }
         }
