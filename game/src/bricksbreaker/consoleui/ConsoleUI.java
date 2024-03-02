@@ -3,7 +3,9 @@ package bricksbreaker.consoleui;
 import bricksbreaker.core.Field;
 import bricksbreaker.core.GameState;
 import bricksbreaker.core.Tile;
+import bricksbreaker.core.TileInfo;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -15,14 +17,8 @@ public class ConsoleUI {
     public ConsoleUI() {
         scanner = new Scanner(System.in);
 
-        System.out.print("Enter field x dimension: ");
-        int x = scanner.nextInt();
-        System.out.print("Enter field y dimension: ");
-        int y = scanner.nextInt();
-        System.out.print("Enter how many colors you want: ");
-        numColors = scanner.nextInt();
+        while (field == null) { field = initialiazeField(); }
 
-        field = new Field(x,y,3);
         play(field);
     }
     private void showField() {
@@ -83,7 +79,10 @@ public class ConsoleUI {
         while(!validAnswer) {
             input = scanner.nextLine();
             if (input.equals("yes")) {
+                field = null;
+                while (field == null) { field = initialiazeField(); }
                 play(field);
+                validAnswer = true;
             } else if (input.equals("no")) {
                 System.out.println("Thank you for playing!");
                 validAnswer = true;
@@ -94,11 +93,18 @@ public class ConsoleUI {
     }
 
     private void handleInput() {
-        if(scanner == null) { scanner = new Scanner(System.in); }
-        System.out.print("Enter x and y coordinates of your move: ");
-        int x = scanner.nextInt();
-        int y = scanner.nextInt();
-        field.breakTile(x,y);
+        try {
+            if (scanner == null) {
+                scanner = new Scanner(System.in);
+            }
+            System.out.print("Enter x and y coordinates of your move: ");
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            field.breakTile(x, y);
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input.");
+            scanner.nextLine();
+        }
     }
 
     private void showStats() {
@@ -121,5 +127,36 @@ public class ConsoleUI {
         field.setScoreThisMove(0);
         score = 0;
         field.setGameState(GameState.PLAYING);
+    }
+
+    private Field initialiazeField() {
+        try {
+            System.out.print("Enter field x dimension: ");
+            int x = scanner.nextInt();
+            while (x < 1) {
+                System.out.print("Enter field dimension bigger than 1: ");
+                x = scanner.nextInt();
+            }
+
+            System.out.print("Enter field y dimension: ");
+            int y = scanner.nextInt();
+            while (y < 1) {
+                System.out.print("Enter field dimension bigger than 1: ");
+                y = scanner.nextInt();
+            }
+
+            System.out.print("Enter how many colors you want: ");
+            numColors = scanner.nextInt();
+            while (numColors < 1 || numColors > TileInfo.values().length - 1) {
+                System.out.print("Enter more than one color and not more than " + (TileInfo.values().length - 1) + ": ");
+                numColors = scanner.nextInt();
+            }
+
+            return new Field(x, y, numColors);
+        } catch (InputMismatchException | NegativeArraySizeException e) {
+            System.out.println("Invalid input. Please enter positive integers for dimensions and number of colors.");
+            scanner.nextLine();
+            return null;
+        }
     }
 }

@@ -5,10 +5,10 @@ package bricksbreaker.core;
 //tcolor = Text color
 
 public enum TileInfo {
-    RED(20, 'R', "\u001B[41m" ,"\u001B[30m"),
+    RED(5, 'R', "\u001B[41m" ,"\u001B[30m"),
     GREEN(10, 'G',"\u001B[42m" ,"\u001B[30m"),
-    BLUE(5, 'B', "\u001B[44m", "\u001B[30m"),
-    YELLOW(15, 'Y', "\u001B[43m", "\u001B[30m"),
+    BLUE(15, 'B', "\u001B[44m", "\u001B[30m"),
+    YELLOW(20, 'Y', "\u001B[43m", "\u001B[30m"),
     PURPLE(25, 'P', "\u001B[45m", "\u001B[30m"),
     CYAN(30, 'C', "\u001B[46m", "\u001B[30m"),
     WHITE(35, 'W', "\u001B[47m", "\u001B[30m"),
