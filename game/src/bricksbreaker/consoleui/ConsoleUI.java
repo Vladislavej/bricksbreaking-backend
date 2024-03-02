@@ -29,18 +29,18 @@ public class ConsoleUI {
 
         System.out.print("    ");
         for (int j = 0; j < cols; j++) {
-            System.out.print(" " + j + " ");
+            System.out.printf("%3d", j);
         }
         System.out.println();
 
-        System.out.print("    ");
+        System.out.print("     ");
         for (int j = 0; j < cols; j++) {
-            System.out.print(" — ");
+            System.out.print(" ─ ");
         }
         System.out.println();
 
         for (int i = 0; i < rows; i++) {
-            System.out.print(i + " | ");
+            System.out.printf("%2d | ", i);
             for (int j = 0; j < cols; j++) {
                 Tile tile = field.getTiles()[i][j];
                 if (tile != null) {
@@ -53,6 +53,7 @@ public class ConsoleUI {
         }
         System.out.println();
     }
+
 
     public void play(Field field) {
         this.field = field;
@@ -145,7 +146,7 @@ public class ConsoleUI {
                 y = scanner.nextInt();
             }
 
-            System.out.print("Enter how many colors you want: ");
+            System.out.print("Enter how many colors you want (maximum " + (TileInfo.values().length - 1) + "): ");
             numColors = scanner.nextInt();
             while (numColors < 1 || numColors > TileInfo.values().length - 1) {
                 System.out.print("Enter more than one color and not more than " + (TileInfo.values().length - 1) + ": ");

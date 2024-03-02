@@ -1,7 +1,6 @@
 package bricksbreaker.core;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +40,7 @@ public class Field  {
                 this.tiles[i][j] = new Tile(randomColor);
             }
         }
-        System.out.println("Generated a new tile field with " + numColors + " different colors!");
+        System.out.println("Generated a new tile field with " + numColors + " different colors possible!");
     }
 
     public void breakTile(int x, int y) {

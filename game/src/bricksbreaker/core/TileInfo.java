@@ -1,9 +1,5 @@
 package bricksbreaker.core;
 
-//sname = Short name
-//bcolor = Background color
-//tcolor = Text color
-
 public enum TileInfo {
     RED(5, 'R', "\u001B[41m" ,"\u001B[30m"),
     GREEN(10, 'G',"\u001B[42m" ,"\u001B[30m"),
