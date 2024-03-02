@@ -58,6 +58,7 @@ public class ConsoleUI {
     public void play(Field field) {
         this.field = field;
         prepareGame();
+        showStats();
         do {
             showField();
             handleInput();
