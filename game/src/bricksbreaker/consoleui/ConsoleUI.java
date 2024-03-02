@@ -27,20 +27,20 @@ public class ConsoleUI {
         int rows = field.getRows();
         int cols = field.getCols();
 
-        System.out.print("    ");
+        System.out.print("     ");
         for (int j = 0; j < cols; j++) {
             System.out.printf("%3d", j);
         }
         System.out.println();
 
-        System.out.print("     ");
+        System.out.print("      ");
         for (int j = 0; j < cols; j++) {
             System.out.print(" ─ ");
         }
         System.out.println();
 
         for (int i = 0; i < rows; i++) {
-            System.out.printf("%2d | ", i);
+            System.out.printf("%3d | ", i);
             for (int j = 0; j < cols; j++) {
                 Tile tile = field.getTiles()[i][j];
                 if (tile != null) {
@@ -135,22 +135,22 @@ public class ConsoleUI {
         try {
             System.out.print("Enter field x dimension: ");
             int x = scanner.nextInt();
-            while (x < 1) {
+            while (x < 2) {
                 System.out.print("Enter field dimension bigger than 1: ");
                 x = scanner.nextInt();
             }
 
             System.out.print("Enter field y dimension: ");
             int y = scanner.nextInt();
-            while (y < 1) {
+            while (y < 2) {
                 System.out.print("Enter field dimension bigger than 1: ");
                 y = scanner.nextInt();
             }
 
             System.out.print("Enter how many colors you want (maximum " + (TileInfo.values().length - 1) + "): ");
             numColors = scanner.nextInt();
-            while (numColors < 1 || numColors > TileInfo.values().length - 1) {
-                System.out.print("Enter more than one color and not more than " + (TileInfo.values().length - 1) + ": ");
+            while (numColors < 2 || numColors > TileInfo.values().length - 1) {
+                System.out.print("Enter more than two colors and not more than " + (TileInfo.values().length - 1) + ": ");
                 numColors = scanner.nextInt();
             }
 
