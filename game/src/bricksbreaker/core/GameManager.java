@@ -1,6 +1,7 @@
 package bricksbreaker.core;
 
-import bricksbreaker.consoleui.ConsoleUI;
+import bricksbreaker.ui.GameUI;
+import bricksbreaker.ui.console.ConsoleUI;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
@@ -13,27 +14,27 @@ public class GameManager {
     private int lives;
     private int numColors;
     private ScoreServiceJDBC scoreServiceJDBC;
-    private ConsoleUI consoleUI;
+    private GameUI gameUI;
     private String player;
     private String game;
 
-    public GameManager() {
+    public GameManager(GameUI gameUI) {
         this.scoreServiceJDBC = new ScoreServiceJDBC();
-        this.consoleUI = new ConsoleUI(null);
+        this.gameUI = gameUI;
         this.player = "player";
         this.game = "Bricks Breaking";
 
         play();
     }
     private Field initialiazeField() {
-        int[] fieldSpec = consoleUI.getFieldSpecs();
+        int[] fieldSpec = gameUI.getFieldSpecs();
         this.numColors = fieldSpec[2];
         return new Field(fieldSpec[0],fieldSpec[1]);
     }
     private void prepareGame() {
         field = null;
         while (field == null) { field = initialiazeField(); }
-        consoleUI.setField(field);
+        gameUI.setField(field);
         this.field.generate(numColors);
         lives = 3;
         field.setBrokenBricks(0);
@@ -44,10 +45,10 @@ public class GameManager {
     public void play() {
         prepareGame();
         do {
-            consoleUI.showStats(score, lives);
-            consoleUI.showField();
+            gameUI.showStats(score, lives);
+            gameUI.showField();
 
-            int[] coordinates = consoleUI.handleMove();
+            int[] coordinates = gameUI.handleMove();
             field.breakTile(coordinates[0], coordinates[1]);
 
             calculateStats();
@@ -61,16 +62,16 @@ public class GameManager {
             System.out.println("Failed!");
         }
 
-        consoleUI.showStats(score, lives);
-        consoleUI.showField();
+        gameUI.showStats(score, lives);
+        gameUI.showField();
 
         Score finalScore = new Score(game, player, score, new Date());
         scoreServiceJDBC.addScore(finalScore);
         List<Score> topScores = scoreServiceJDBC.getTopScores(game);
 
-        consoleUI.showHighScores(topScores);
+        gameUI.showHighScores(topScores);
 
-        if(consoleUI.playAgain()) { play(); }
+        if(gameUI.playAgain()) { play(); }
     }
 
     private void calculateStats() {

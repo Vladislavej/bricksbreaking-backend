@@ -1,15 +1,16 @@
-package bricksbreaker.consoleui;
+package bricksbreaker.ui.console;
 
 import bricksbreaker.core.Field;
 import bricksbreaker.core.Tile;
 import bricksbreaker.core.TileInfo;
+import bricksbreaker.ui.GameUI;
 import sk.tuke.gamestudio.entity.Score;
 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class ConsoleUI {
+public class ConsoleUI implements GameUI {
     private Scanner scanner;
     private static final String ANSI_RESET = "\u001B[0m";
     private Field field;
