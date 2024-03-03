@@ -4,24 +4,23 @@ import bricksbreaker.core.Field;
 import bricksbreaker.core.GameState;
 import bricksbreaker.core.Tile;
 import bricksbreaker.core.TileInfo;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
+import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private Field field;
     private Scanner scanner;
-    private int score;
     private static final String ANSI_RESET = "\u001B[0m";
-    private int numColors;
-    public ConsoleUI() {
+    private Field field;
+    public ConsoleUI(Field field) {
         scanner = new Scanner(System.in);
-
-        while (field == null) { field = initialiazeField(); }
-
-        play(field);
+        this.field = field;
     }
-    private void showField() {
+    public void showField() {
         System.out.println();
 
         int rows = field.getRows();
@@ -54,107 +53,79 @@ public class ConsoleUI {
         System.out.println();
     }
 
-
-    public void play(Field field) {
-        this.field = field;
-        prepareGame();
-        showStats();
-        do {
-            showField();
-            handleInput();
-            field.unite();
-            showStats();
-            field.checkGameState();
-        } while(field.getGameState() == GameState.PLAYING);
-
-        showField();
-
-        if(field.getGameState() == GameState.SOLVED) {
-            System.out.println("Solved!");
-        } else if(field.getGameState() == GameState.FAILED){
-            System.out.println("Failed!");
+    public int[] handleInput() {
+        try {
+            int[] coordinates = new int[2];
+            System.out.print("Enter x and y coordinates of your move: ");
+            coordinates[0] = scanner.nextInt();
+            coordinates[1] = scanner.nextInt();
+            return coordinates;
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input.");
+            scanner.nextLine();
         }
+        return null;
+    }
 
+    public void showStats(int score, int lives) {
+        System.out.println("Score: " + score + " | Lives: " + lives);
+    }
+
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    public void showHighScores(List<Score> topScores) {
+        System.out.println("High scores:");
+        for (int i = 0; i < 10; i++) {
+            try {
+                Score topScore = topScores.get(i);
+                System.out.println((i+1) + ". " + topScore.getPlayer() + " " + topScore.getPoints() + " " + topScore.getPlayedOn());
+            } catch (IndexOutOfBoundsException e) {
+                return;
+            }
+        }
+    }
+    public boolean playAgain() {
         System.out.println("Do you want to play again? (yes/no)");
         String input = scanner.nextLine(); //required even tho idea says no lol otherwise program just terminates
-        boolean validAnswer = false;
-        while(!validAnswer) {
+        while(true) {
             input = scanner.nextLine();
             if (input.equals("yes")) {
-                field = null;
-                while (field == null) { field = initialiazeField(); }
-                play(field);
-                validAnswer = true;
+                return true;
             } else if (input.equals("no")) {
                 System.out.println("Thank you for playing!");
-                validAnswer = true;
+                return false;
             } else {
                 System.out.println("Didnt get a valid answer!");
             }
         }
     }
-
-    private void handleInput() {
+    public int[] getFieldSpecs() {
         try {
-            if (scanner == null) {
-                scanner = new Scanner(System.in);
-            }
-            System.out.print("Enter x and y coordinates of your move: ");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            field.breakTile(x, y);
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input.");
-            scanner.nextLine();
-        }
-    }
-
-    private void showStats() {
-        calculateStats();
-        System.out.print("Score: " + score + " | Lives: " + field.getLives());
-    }
-
-    private void calculateStats() {
-        score += field.getScoreThisMove() * field.getBrokenBricks();
-
-        if(field.getBrokenBricks() == 1) { field.setLives(field.getLives() - 1); }
-
-        field.setBrokenBricks(0);
-        field.setScoreThisMove(0);
-    }
-    private void prepareGame() {
-        field.generate(numColors);
-        field.setLives(3);
-        field.setBrokenBricks(0);
-        field.setScoreThisMove(0);
-        score = 0;
-        field.setGameState(GameState.PLAYING);
-    }
-
-    private Field initialiazeField() {
-        try {
+            int[] specs = new int[3];
             System.out.print("Enter field x dimension: ");
-            int x = scanner.nextInt();
-            while (x < 2) {
+            specs[0] = scanner.nextInt();
+            while (specs[0] < 2) {
                 System.out.print("Enter field dimension bigger than 1: ");
-                x = scanner.nextInt();
+                specs[0] = scanner.nextInt();
             }
 
             System.out.print("Enter field y dimension: ");
-            int y = scanner.nextInt();
-            while (y < 2) {
+            specs[1] = scanner.nextInt();
+            while (specs[1] < 2) {
                 System.out.print("Enter field dimension bigger than 1: ");
-                y = scanner.nextInt();
+                specs[1] = scanner.nextInt();
             }
 
             System.out.print("Enter how many colors you want (maximum " + (TileInfo.values().length - 1) + "): ");
-            numColors = scanner.nextInt();
-            while (numColors < 2 || numColors > TileInfo.values().length - 1) {
+            specs[2] = scanner.nextInt();
+            while (specs[2] < 2 || specs[2] > TileInfo.values().length - 1) {
                 System.out.print("Enter more than two colors and not more than " + (TileInfo.values().length - 1) + ": ");
-                numColors = scanner.nextInt();
+                specs[2] = scanner.nextInt();
             }
 
-            return new Field(x, y, numColors);
+            return specs;
         } catch (InputMismatchException | NegativeArraySizeException e) {
             System.out.println("Invalid input. Please enter positive integers for dimensions and number of colors.");
             scanner.nextLine();

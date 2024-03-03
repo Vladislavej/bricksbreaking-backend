@@ -10,14 +10,12 @@ public class Field  {
     private Tile[][] tiles;
     private GameState gameState;
     private int scoreThisMove;
-    private int lives;
     private int brokenBricks;
-    public Field(int rows, int cols, int lives) {
+    public Field(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         tiles = new Tile[rows][cols];
         this.gameState = GameState.PLAYING;
-        this.lives = lives;
     }
     public Tile[][] getTiles() {
         return tiles;
@@ -108,9 +106,7 @@ public class Field  {
         return gameState;
     }
 
-    public void checkGameState() {
-        if(lives <= 0) { gameState = GameState.FAILED; }
-
+    public void updateGameState() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if(tiles[i][j] != null) { return; }
@@ -129,14 +125,6 @@ public class Field  {
 
     public void setScoreThisMove(int scoreThisMove) {
         this.scoreThisMove = scoreThisMove;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
     }
 
     public int getBrokenBricks() {
