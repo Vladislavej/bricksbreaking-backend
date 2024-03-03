@@ -14,10 +14,14 @@ public class GameManager {
     private int numColors;
     private ScoreServiceJDBC scoreServiceJDBC;
     private ConsoleUI consoleUI;
+    private String player;
+    private String game;
 
     public GameManager() {
         this.scoreServiceJDBC = new ScoreServiceJDBC();
         this.consoleUI = new ConsoleUI(null);
+        this.player = "player";
+        this.game = "Bricks Breaking";
 
         play();
     }
@@ -25,15 +29,6 @@ public class GameManager {
         int[] fieldSpec = consoleUI.getFieldSpecs();
         this.numColors = fieldSpec[2];
         return new Field(fieldSpec[0],fieldSpec[1]);
-    }
-    private void calculateStats() {
-        score += field.getScoreThisMove() * field.getBrokenBricks();
-
-        if(field.getBrokenBricks() == 1) { lives -= 1; }
-        if(lives < 1) { field.setGameState(GameState.FAILED); }
-
-        field.setBrokenBricks(0);
-        field.setScoreThisMove(0);
     }
     private void prepareGame() {
         field = null;
@@ -51,8 +46,10 @@ public class GameManager {
         do {
             consoleUI.showStats(score, lives);
             consoleUI.showField();
-            int[] coordinates = consoleUI.handleInput();
+
+            int[] coordinates = consoleUI.handleMove();
             field.breakTile(coordinates[0], coordinates[1]);
+
             calculateStats();
             field.unite();
             field.updateGameState();
@@ -67,12 +64,22 @@ public class GameManager {
         consoleUI.showStats(score, lives);
         consoleUI.showField();
 
-        Score finalScore = new Score("Bricks Breaking", "vladej", score, new Date());
+        Score finalScore = new Score(game, player, score, new Date());
         scoreServiceJDBC.addScore(finalScore);
-        List<Score> topScores = scoreServiceJDBC.getTopScores("Bricks Breaking");
+        List<Score> topScores = scoreServiceJDBC.getTopScores(game);
 
         consoleUI.showHighScores(topScores);
 
         if(consoleUI.playAgain()) { play(); }
+    }
+
+    private void calculateStats() {
+        score += field.getScoreThisMove() * field.getBrokenBricks();
+
+        if(field.getBrokenBricks() == 1) { lives -= 1; }
+        if(lives < 1) { field.setGameState(GameState.FAILED); }
+
+        field.setBrokenBricks(0);
+        field.setScoreThisMove(0);
     }
 }

@@ -1,13 +1,10 @@
 package bricksbreaker.consoleui;
 
 import bricksbreaker.core.Field;
-import bricksbreaker.core.GameState;
 import bricksbreaker.core.Tile;
 import bricksbreaker.core.TileInfo;
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -53,7 +50,7 @@ public class ConsoleUI {
         System.out.println();
     }
 
-    public int[] handleInput() {
+    public int[] handleMove() {
         try {
             int[] coordinates = new int[2];
             System.out.print("Enter x and y coordinates of your move: ");
@@ -80,7 +77,11 @@ public class ConsoleUI {
         for (int i = 0; i < 10; i++) {
             try {
                 Score topScore = topScores.get(i);
-                System.out.println((i+1) + ". " + topScore.getPlayer() + " " + topScore.getPoints() + " " + topScore.getPlayedOn());
+                String rank = String.format("%-2d", i + 1);
+                String player = String.format("%-15s", topScore.getPlayer());
+                String points = String.format("%-10s", topScore.getPoints());
+                String playedOn = String.format("%-20s", topScore.getPlayedOn());
+                System.out.println(rank + ". " + player + points + playedOn);
             } catch (IndexOutOfBoundsException e) {
                 return;
             }
