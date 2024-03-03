@@ -13,4 +13,6 @@ public interface GameUI {
     int[] handleMove();
     void showHighScores(List<Score> topScores);
     boolean playAgain();
+    int mainMenu();
+    String playerName();
 }

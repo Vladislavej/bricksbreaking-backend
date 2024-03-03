@@ -38,7 +38,7 @@ public class Field  {
                 this.tiles[i][j] = new Tile(randomColor);
             }
         }
-        System.out.println("Generated a new tile field with " + numColors + " different colors possible!");
+        //System.out.println("Generated a new tile field with " + numColors + " different colors possible!");
     }
 
     public void breakTile(int x, int y) {
