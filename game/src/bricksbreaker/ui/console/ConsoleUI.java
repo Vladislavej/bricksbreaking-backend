@@ -69,6 +69,7 @@
 
         @Override
         public void showStats(int score, int lives) {
+            clearScreen();
             System.out.println("Score: " + score + " | Lives: " + lives);
         }
 
@@ -79,6 +80,7 @@
 
         @Override
         public void showHighScores(List<Score> topScores) {
+            clearScreen();
             System.out.println("High scores:");
             for (int i = 0; i < 10; i++) {
                 try {
@@ -88,9 +90,7 @@
                     String points = String.format("%-10s", topScore.getPoints());
                     String playedOn = String.format("%-20s", topScore.getPlayedOn());
                     System.out.println(rank + ". " + player + points + playedOn);
-                } catch (IndexOutOfBoundsException e) {
-                    return;
-                }
+                } catch (IndexOutOfBoundsException e) { return; }
             }
         }
 
@@ -100,9 +100,9 @@
             String input = scanner.nextLine(); //required even tho idea says no lol otherwise program just terminates
             while(true) {
                 input = scanner.nextLine();
-                if (input.equals("yes")) {
+                if (input.toLowerCase().equals("yes")) {
                     return true;
-                } else if (input.equals("no")) {
+                } else if (input.toLowerCase().equals("no")) {
                     return false;
                 } else {
                     System.out.println("Didnt get a valid answer!");
@@ -177,9 +177,16 @@
 
         @Override
         public String playerName() {
+            clearScreen();
             System.out.println("Enter new name: ");
             String input = scanner.nextLine();
             input = scanner.nextLine();
             return input;
+        }
+
+        private static void clearScreen() {
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
         }
     }

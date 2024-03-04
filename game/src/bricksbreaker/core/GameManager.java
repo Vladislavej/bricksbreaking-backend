@@ -1,7 +1,11 @@
 package bricksbreaker.core;
 
 import bricksbreaker.ui.GameUI;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.CommentServiceJDBC;
+import sk.tuke.gamestudio.service.RatingServiceJDBC;
 import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
 import java.util.Date;
@@ -14,6 +18,8 @@ public class GameManager {
     private int lives;
     private int numColors;
     private ScoreServiceJDBC scoreServiceJDBC;
+    private CommentServiceJDBC commentServiceJDBC;
+    private RatingServiceJDBC ratingServiceJDBC;
     private List<Score> topScores;
     private GameUI gameUI;
     private String player;
@@ -25,7 +31,16 @@ public class GameManager {
         this.game = "Bricks Breaking";
 
         this.scoreServiceJDBC = new ScoreServiceJDBC();
+        this.commentServiceJDBC = new CommentServiceJDBC();
+        this.ratingServiceJDBC = new RatingServiceJDBC();
+
         this.topScores = scoreServiceJDBC.getTopScores(game);
+
+        Comment comment = new Comment(game,player,"nazdaaaaaaaaar",new Date());
+        commentServiceJDBC.addComment(comment);
+
+        Rating rating = new Rating(game,player,5,new Date());
+        ratingServiceJDBC.setRating(rating);
 
         mainMenu(gameUI.mainMenu());
     }
@@ -40,7 +55,7 @@ public class GameManager {
             if(Objects.equals(gameMode, "custom")) {
                 field = initialiazeField();
             } else if (Objects.equals(gameMode, "classic")) {
-                field = new Field(9,9);
+                field = new Field(10,10);
                 numColors = 4;
             }
         }
@@ -75,8 +90,10 @@ public class GameManager {
         gameUI.showStats(score, lives);
         gameUI.showField();
 
-        Score finalScore = new Score(game, player, score, new Date());
-        scoreServiceJDBC.addScore(finalScore);
+        if(Objects.equals(gameMode, "classic")) {
+            Score finalScore = new Score(game, player, score, new Date());
+            scoreServiceJDBC.addScore(finalScore);
+        }
         topScores = scoreServiceJDBC.getTopScores(game);
 
         gameUI.showHighScores(topScores);
