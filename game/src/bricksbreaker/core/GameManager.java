@@ -112,6 +112,11 @@ public class GameManager {
     }
 
     private void mainMenu(int i) {
+        if(field != null) {
+            score = 0;
+            field = null;
+        }
+
         switch (i) {
             case 1:
                 play("classic");

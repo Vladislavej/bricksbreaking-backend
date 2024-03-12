@@ -13,6 +13,11 @@
     public class ConsoleUI implements GameUI {
         private Scanner scanner;
         private static final String ANSI_RESET = "\u001B[0m";
+        public static final String BLACK_BACKGROUND = "\033[40m"; // BLACK
+        public static final String CYAN_BOLD_BRIGHT = "\033[1;96m"; // CYAN
+        public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
+        public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
+        public static final String RED_UNDERLINED = "\033[4;31m";    // RED
         private Field field;
         public ConsoleUI(Field field) {
             scanner = new Scanner(System.in);
@@ -25,30 +30,31 @@
             int rows = field.getRows();
             int cols = field.getCols();
 
-            System.out.print("     ");
+            System.out.print(BLACK_BACKGROUND + "      " + ANSI_RESET);
             for (int j = 0; j < cols; j++) {
-                System.out.printf("%3d", j);
+                System.out.printf(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + "%2d " + ANSI_RESET, j);
             }
             System.out.println();
 
-            System.out.print("      ");
+            System.out.print(BLACK_BACKGROUND + "      " + ANSI_RESET);
             for (int j = 0; j < cols; j++) {
-                System.out.print(" ─ ");
+                System.out.print(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT +  " ─ " + ANSI_RESET);
             }
             System.out.println();
 
             for (int i = 0; i < rows; i++) {
-                System.out.printf("%3d | ", i);
+                System.out.printf(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + "%3d | " + ANSI_RESET, i);
                 for (int j = 0; j < cols; j++) {
                     Tile tile = field.getTiles()[i][j];
                     if (tile != null) {
-                        System.out.print(tile.getColor().getTcolor() + tile.getColor().getBcolor() + " " + tile.getColor().getSname() + " ");
+                        System.out.print(tile.getColor().getTcolor() + tile.getColor().getBcolor() + " " + tile.getColor().getSname() + " " + ANSI_RESET);
                     } else {
-                        System.out.print(ANSI_RESET + " - ");
+                        System.out.print(BLACK_BACKGROUND + " × " + ANSI_RESET);
                     }
                 }
                 System.out.println(ANSI_RESET);
             }
+
             System.out.println();
         }
 
@@ -56,21 +62,21 @@
         public int[] handleMove() {
             try {
                 int[] coordinates = new int[2];
-                System.out.print("Enter x and y coordinates of your move: ");
+                System.out.print(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + " Enter x and y coordinates of your move: " + ANSI_RESET + " ");
                 coordinates[0] = scanner.nextInt();
                 coordinates[1] = scanner.nextInt();
                 return coordinates;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input.");
+                System.out.println(RED_UNDERLINED + "Invalid input." + ANSI_RESET);
                 scanner.nextLine();
+                return handleMove();
             }
-            return null;
         }
 
         @Override
         public void showStats(int score, int lives) {
             clearScreen();
-            System.out.println("Score: " + score + " | Lives: " + lives);
+            System.out.println(BLACK_BACKGROUND+ YELLOW_BOLD_BRIGHT + " Score: " + score + " | Lives: " + lives + " " + ANSI_RESET);
         }
 
         @Override
