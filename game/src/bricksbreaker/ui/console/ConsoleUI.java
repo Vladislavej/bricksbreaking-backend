@@ -1,13 +1,16 @@
     package bricksbreaker.ui.console;
 
     import bricksbreaker.core.Field;
+    import bricksbreaker.core.GameManager;
     import bricksbreaker.core.Tile;
     import bricksbreaker.core.TileInfo;
     import bricksbreaker.ui.GameUI;
     import sk.tuke.gamestudio.entity.Score;
 
+    import java.text.SimpleDateFormat;
     import java.util.InputMismatchException;
     import java.util.List;
+    import java.util.Objects;
     import java.util.Scanner;
 
     public class ConsoleUI implements GameUI {
@@ -18,15 +21,17 @@
         public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
         public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
         public static final String RED_UNDERLINED = "\033[4;31m";    // RED
+        public static final String	YELLOW = "\u001B[33m";
         private Field field;
+        private String player;
+
         public ConsoleUI(Field field) {
             scanner = new Scanner(System.in);
             this.field = field;
+            this.player = "Player";
         }
         @Override
         public void showField() {
-            System.out.println();
-
             int rows = field.getRows();
             int cols = field.getCols();
 
@@ -67,7 +72,7 @@
                 coordinates[1] = scanner.nextInt();
                 return coordinates;
             } catch (InputMismatchException e) {
-                System.out.println(RED_UNDERLINED + "Invalid input." + ANSI_RESET);
+                System.out.println(RED_UNDERLINED + "Invalid input. Correct input example: '4 8'" + ANSI_RESET);
                 scanner.nextLine();
                 return handleMove();
             }
@@ -86,16 +91,17 @@
 
         @Override
         public void showHighScores(List<Score> topScores) {
-            clearScreen();
-            System.out.println("High scores:");
+            System.out.println();
+            System.out.println(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT +"High scores:" + ANSI_RESET);
             for (int i = 0; i < 10; i++) {
                 try {
                     Score topScore = topScores.get(i);
                     String rank = String.format("%-2d", i + 1);
-                    String player = String.format("%-15s", topScore.getPlayer());
+                    String player = String.format("%-25s", topScore.getPlayer());
                     String points = String.format("%-10s", topScore.getPoints());
-                    String playedOn = String.format("%-20s", topScore.getPlayedOn());
-                    System.out.println(rank + ". " + player + points + playedOn);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String playedOn = String.format("%-20s", dateFormat.format(topScore.getPlayedOn()));
+                    System.out.println(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + rank + ". " + ANSI_RESET + BLACK_BACKGROUND + player + ANSI_RESET + BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + points + ANSI_RESET + BLACK_BACKGROUND + playedOn + ANSI_RESET);
                 } catch (IndexOutOfBoundsException e) { return; }
             }
         }
@@ -126,26 +132,46 @@
             System.out.println("1. Classic Game");
             System.out.println("2. Custom Game");
             System.out.println("3. Show HighScores");
-            System.out.println("4. Change Player Name");
+            System.out.println("4. Change Player Name (" + player + ")");
             System.out.println("5. Exit");
+
             System.out.println();
 
-            int input = -1;
-            input = scanner.nextInt();
-            switch (input) {
-                case 1:
-                    return input;
-                case 2:
-                    return input;
-                case 3:
-                    return input;
-                case 4:
-                    return input;
-                case 5:
-                    System.out.println("Thank you for playing!");
-                    return input;
+            System.out.println("6. Comment");
+            System.out.println("7. Rating");
+            System.out.println();
+
+            try {
+                int input = -1;
+                input = scanner.nextInt();
+                switch (input) {
+                    case 1:
+                        return input;
+                    case 2:
+                        return input;
+                    case 3:
+                        return input;
+                    case 4:
+                        return input;
+                    case 5:
+                        System.out.println("Thank you for playing!");
+                        return input;
+                    case 6:
+                        System.out.println("Enter comment (as "+ player + "): ");
+                        return input;
+                    case 7:
+                        System.out.println("Enter rating (as "+ player + "): ");
+                        return input;
+                }
+            } catch (InputMismatchException e) {
+                clearScreen();
+                System.out.println(RED_UNDERLINED + "Invalid input. Pick a valid menu option. Example: '1' for Classic Game" + ANSI_RESET);
+                scanner.nextLine();
+                return mainMenu();
             }
-            return input;
+            clearScreen();
+            System.out.println(RED_UNDERLINED + "Invalid input. Pick a valid menu option. Example: '1' for Classic Game" + ANSI_RESET);
+            return 0;
         }
 
         @Override
@@ -187,12 +213,36 @@
             System.out.println("Enter new name: ");
             String input = scanner.nextLine();
             input = scanner.nextLine();
+            player = input;
             return input;
         }
 
         private static void clearScreen() {
             for (int i = 0; i < 50; i++) {
                 System.out.println();
+            }
+        }
+
+        @Override
+        public String getComment() {
+            String input = scanner.nextLine();
+            input = scanner.nextLine();
+            if(Objects.equals(input, "cancel")) {
+                System.out.println(RED_UNDERLINED + "Comment canceled" + ANSI_RESET);
+                return " ";
+            }
+            return input;
+        }
+
+        @Override
+        public int getRating() {
+            try {
+                int input = scanner.nextInt();
+                return input;
+            } catch (InputMismatchException e) {
+                System.out.println(RED_UNDERLINED + "Enter valid rating" + ANSI_RESET);
+                scanner.nextLine();
+                return getRating();
             }
         }
     }

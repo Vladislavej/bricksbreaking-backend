@@ -36,12 +36,6 @@ public class GameManager {
 
         this.topScores = scoreServiceJDBC.getTopScores(game);
 
-        Comment comment = new Comment(game,player,"nazdaaaaaaaaar",new Date());
-        commentServiceJDBC.addComment(comment);
-
-        Rating rating = new Rating(game,player,5,new Date());
-        ratingServiceJDBC.setRating(rating);
-
         mainMenu(gameUI.mainMenu());
     }
     private Field initialiazeField() {
@@ -91,6 +85,7 @@ public class GameManager {
         gameUI.showField();
 
         if(Objects.equals(gameMode, "classic")) {
+
             Score finalScore = new Score(game, player, score, new Date());
             scoreServiceJDBC.addScore(finalScore);
         }
@@ -116,7 +111,6 @@ public class GameManager {
             score = 0;
             field = null;
         }
-
         switch (i) {
             case 1:
                 play("classic");
@@ -131,7 +125,22 @@ public class GameManager {
             case 5:
                 System.exit(0);
                 return;
+            case 6:
+                String getComment = gameUI.getComment();
+                if(getComment != " ") {
+                    Comment comment = new Comment(game, player, gameUI.getComment(), new Date());
+                    commentServiceJDBC.addComment(comment);
+                }
+                break;
+            case 7:
+                Rating rating = new Rating(game,player,gameUI.getRating(),new Date());
+                ratingServiceJDBC.setRating(rating);
+                break;
         }
         mainMenu(gameUI.mainMenu());
+    }
+
+    public String getPlayer() {
+        return player;
     }
 }

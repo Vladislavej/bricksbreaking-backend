@@ -15,4 +15,6 @@ public interface GameUI {
     boolean playAgain();
     int mainMenu();
     String playerName();
+    String getComment();
+    int getRating();
 }
