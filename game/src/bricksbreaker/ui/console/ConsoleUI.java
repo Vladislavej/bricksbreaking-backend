@@ -221,7 +221,7 @@
         @Override
         public String playerName() {
             clearScreen();
-            System.out.println("Enter new name: ");
+            System.out.println(YELLOW_BOLD_BRIGHT + "😎Enter new name😜" + ANSI_RESET);
             String input = scanner.nextLine();
             input = scanner.nextLine();
             player = input;

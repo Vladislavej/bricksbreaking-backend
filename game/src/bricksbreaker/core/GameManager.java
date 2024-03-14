@@ -45,7 +45,7 @@ public class GameManager {
         this.numColors = fieldSpec[2];
         return new Field(fieldSpec[0],fieldSpec[1]);
     }
-    private void prepareGame(String gameMode) {
+    public void prepareGame(String gameMode) {
         field = null;
         while (field == null) {
             if(Objects.equals(gameMode, "custom")) {
@@ -98,7 +98,7 @@ public class GameManager {
         if(gameUI.playAgain()) { play(gameMode); } else { mainMenu(gameUI.mainMenu()); }
     }
 
-    private void calculateStats() {
+    public void calculateStats() {
         score += field.getScoreThisMove() * field.getBrokenBricks();
 
         if(field.getBrokenBricks() == 1) { lives -= 1; }
@@ -147,5 +147,37 @@ public class GameManager {
 
     public String getPlayer() {
         return player;
+    }
+
+    public ScoreServiceJDBC getScoreServiceJDBC() {
+        return scoreServiceJDBC;
+    }
+
+    public void setScoreServiceJDBC(ScoreServiceJDBC scoreServiceJDBC) {
+        this.scoreServiceJDBC = scoreServiceJDBC;
+    }
+
+    public CommentServiceJDBC getCommentServiceJDBC() {
+        return commentServiceJDBC;
+    }
+
+    public void setCommentServiceJDBC(CommentServiceJDBC commentServiceJDBC) {
+        this.commentServiceJDBC = commentServiceJDBC;
+    }
+
+    public RatingServiceJDBC getRatingServiceJDBC() {
+        return ratingServiceJDBC;
+    }
+
+    public void setRatingServiceJDBC(RatingServiceJDBC ratingServiceJDBC) {
+        this.ratingServiceJDBC = ratingServiceJDBC;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }

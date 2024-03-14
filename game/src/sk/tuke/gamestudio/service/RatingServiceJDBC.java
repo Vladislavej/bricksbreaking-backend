@@ -14,22 +14,51 @@ public class RatingServiceJDBC implements  RatingService {
     public static final String SELECT = "SELECT game, player, rating, ratedOn FROM rating WHERE game = ? ORDER BY ratedOn DESC LIMIT 10";
     public static final String DELETE = "DELETE FROM rating";
     public static final String INSERT = "INSERT INTO rating (game, player, rating, ratedOn) VALUES (?, ?, ?, ?)";
+
     @Override
     public void setRating(Rating rating) throws RatingException {
-        if(rating.getRating() < 0 || rating.getRating() > 5)  { throw new RatingException("Rating value out of range"); }
+        if (rating.getRating() < 0 || rating.getRating() > 5) {
+            throw new RatingException("Rating value out of range");
+        }
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(INSERT)
-        ) {
-            statement.setString(1, rating.getGame());
-            statement.setString(2, rating.getPlayer());
-            statement.setInt(3, rating.getRating());
-            statement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
-            statement.executeUpdate();
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            String selectQuery = "SELECT COUNT(*) AS count FROM rating WHERE game = ? AND player = ?";
+            try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+                selectStatement.setString(1, rating.getGame());
+                selectStatement.setString(2, rating.getPlayer());
+
+                try (ResultSet resultSet = selectStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt("count");
+                        if (count > 0) {
+                            // If a rating already exists, update it
+                            String updateQuery = "UPDATE rating SET rating = ?, ratedOn = ? WHERE game = ? AND player = ?";
+                            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                                updateStatement.setInt(1, rating.getRating());
+                                updateStatement.setTimestamp(2, new Timestamp(rating.getRatedOn().getTime()));
+                                updateStatement.setString(3, rating.getGame());
+                                updateStatement.setString(4, rating.getPlayer());
+                                updateStatement.executeUpdate();
+                            }
+                        } else {
+                            // If a rating doesn't exist, insert a new one
+                            String insertQuery = "INSERT INTO rating (game, player, rating, ratedOn) VALUES (?, ?, ?, ?)";
+                            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                insertStatement.setString(1, rating.getGame());
+                                insertStatement.setString(2, rating.getPlayer());
+                                insertStatement.setInt(3, rating.getRating());
+                                insertStatement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
+                                insertStatement.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            }
         } catch (SQLException e) {
             throw new RatingException("Problem setting rating", e);
         }
     }
+
 
     @Override
     public int getAverageRating(String game) throws RatingException {
