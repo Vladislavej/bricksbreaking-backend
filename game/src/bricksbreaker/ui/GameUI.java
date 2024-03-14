@@ -17,4 +17,6 @@ public interface GameUI {
     String playerName();
     String getComment();
     int getRating();
+    void setPlayer(String player);
+    void passAverageRating(int rating);
 }

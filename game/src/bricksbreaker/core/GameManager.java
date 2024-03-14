@@ -27,13 +27,15 @@ public class GameManager {
 
     public GameManager(GameUI gameUI) {
         this.gameUI = gameUI;
-        this.player = "player";
+        this.player = "Player";
         this.game = "Bricks Breaking";
+        gameUI.setPlayer(player);
 
         this.scoreServiceJDBC = new ScoreServiceJDBC();
         this.commentServiceJDBC = new CommentServiceJDBC();
         this.ratingServiceJDBC = new RatingServiceJDBC();
 
+        gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
         this.topScores = scoreServiceJDBC.getTopScores(game);
 
         mainMenu(gameUI.mainMenu());
@@ -68,11 +70,13 @@ public class GameManager {
             gameUI.showField();
 
             int[] coordinates = gameUI.handleMove();
+
             field.breakTile(coordinates[0], coordinates[1]);
 
             calculateStats();
             field.unite();
             field.updateGameState();
+
         } while(field.getGameState() == GameState.PLAYING);
 
         if(field.getGameState() == GameState.SOLVED) {
@@ -85,13 +89,11 @@ public class GameManager {
         gameUI.showField();
 
         if(Objects.equals(gameMode, "classic")) {
-
             Score finalScore = new Score(game, player, score, new Date());
             scoreServiceJDBC.addScore(finalScore);
+            topScores = scoreServiceJDBC.getTopScores(game);
+            gameUI.showHighScores(topScores);
         }
-        topScores = scoreServiceJDBC.getTopScores(game);
-
-        gameUI.showHighScores(topScores);
 
         if(gameUI.playAgain()) { play(gameMode); } else { mainMenu(gameUI.mainMenu()); }
     }
@@ -127,14 +129,17 @@ public class GameManager {
                 return;
             case 6:
                 String getComment = gameUI.getComment();
-                if(getComment != " ") {
-                    Comment comment = new Comment(game, player, gameUI.getComment(), new Date());
+                if(getComment != null) {
+                    Comment comment = new Comment(game, player, getComment, new Date());
                     commentServiceJDBC.addComment(comment);
                 }
                 break;
             case 7:
-                Rating rating = new Rating(game,player,gameUI.getRating(),new Date());
-                ratingServiceJDBC.setRating(rating);
+                int getRating = gameUI.getRating();
+                if(getRating != -1) {
+                    Rating rating = new Rating(game, player, getRating, new Date());
+                    ratingServiceJDBC.setRating(rating);
+                }
                 break;
         }
         mainMenu(gameUI.mainMenu());

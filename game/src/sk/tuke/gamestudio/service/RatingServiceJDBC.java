@@ -16,6 +16,8 @@ public class RatingServiceJDBC implements  RatingService {
     public static final String INSERT = "INSERT INTO rating (game, player, rating, ratedOn) VALUES (?, ?, ?, ?)";
     @Override
     public void setRating(Rating rating) throws RatingException {
+        if(rating.getRating() < 0 || rating.getRating() > 5)  { throw new RatingException("Rating value out of range"); }
+
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT)
         ) {
@@ -31,8 +33,21 @@ public class RatingServiceJDBC implements  RatingService {
 
     @Override
     public int getAverageRating(String game) throws RatingException {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement("SELECT AVG(rating) AS avg_rating FROM rating WHERE game = ?");
+        ) {
+            statement.setString(1, game);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("avg_rating");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RatingException("Problem getting average rating", e);
+        }
         return 0;
     }
+
 
     @Override
     public int getRating(String game, String player) throws RatingException {
