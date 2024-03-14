@@ -24,9 +24,14 @@
         public static final String RED_UNDERLINED = "\033[4;31m";    // RED
         public static final String GREEN_UNDERLINED = "\033[4;32m";
         public static final String WHITE_BACKGROUND = "\033[47m";  // WHITE
+        public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
         public static final String YELLOW_UNDERLINED = "\033[4;33m"; // YELLOW
         public static final String BLACK_BRIGHT = "\033[0;90m";  // BLACK
+        public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
+        public static final String BROWN = "\033[0;33m"; // Brown (approximation)
         public static final String	YELLOW = "\u001B[33m";
+        public static final String RED_BRIGHT = "\033[0;91m";    // RED
+        public static final String GREEN_BRIGHT = "\033[0;92m";  // GREEN
         private Field field;
         private String player;
         private int averageRating;
@@ -41,20 +46,20 @@
             int rows = field.getRows();
             int cols = field.getCols();
 
-            System.out.print(BLACK_BACKGROUND + "      " + ANSI_RESET);
+            System.out.print(WHITE_BOLD_BRIGHT + "      " + ANSI_RESET);
             for (int j = 0; j < cols; j++) {
-                System.out.printf(BLACK_BACKGROUND + "%2d " + ANSI_RESET, j);
+                System.out.printf(WHITE_BOLD_BRIGHT + "%2d " + ANSI_RESET, j);
             }
             System.out.println();
 
-            System.out.print(BLACK_BACKGROUND + "      " + ANSI_RESET);
+            System.out.print(WHITE_BOLD_BRIGHT + "      " + ANSI_RESET);
             for (int j = 0; j < cols; j++) {
-                System.out.print(BLACK_BACKGROUND +  " ─ " + ANSI_RESET);
+                System.out.print(WHITE_BOLD_BRIGHT + " ─ " + ANSI_RESET);
             }
             System.out.println();
 
             for (int i = 0; i < rows; i++) {
-                System.out.printf(BLACK_BACKGROUND + "%3d | " + ANSI_RESET, i);
+                System.out.printf(WHITE_BOLD_BRIGHT + "%3d | " + ANSI_RESET, i);
                 for (int j = 0; j < cols; j++) {
                     Tile tile = field.getTiles()[i][j];
                     if (tile != null) {
@@ -73,7 +78,7 @@
         public int[] handleMove() {
             try {
                 int[] coordinates = new int[2];
-                System.out.print(BLACK_BACKGROUND + " Enter x and y coordinates of your move: " + ANSI_RESET + " ");
+                System.out.print(WHITE_BOLD_BRIGHT + " Enter x and y coordinates of your move: " + ANSI_RESET + " ");
                 coordinates[0] = scanner.nextInt();
                 coordinates[1] = scanner.nextInt();
                 return coordinates;
@@ -87,7 +92,8 @@
         @Override
         public void showStats(int score, int lives) {
             clearScreen();
-            System.out.println(BLACK_BACKGROUND + " 🌟 " + score + " | 💖 " + lives + " " + ANSI_RESET);
+            System.out.println(YELLOW_BOLD_BRIGHT + " 🌟 " + score + ANSI_RESET + " 💖 " + RED_BRIGHT + lives + " " + ANSI_RESET);
+            System.out.println();
         }
 
         @Override
@@ -98,7 +104,8 @@
         @Override
         public void showHighScores(List<Score> topScores) {
             System.out.println();
-            System.out.println(BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT +"🔥High scores🔥" + ANSI_RESET);
+            System.out.println("🔥High scores🔥" + ANSI_RESET);
+            System.out.println();
             for (int i = 0; i < 10; i++) {
                 try {
                     Score topScore = topScores.get(i);
@@ -107,10 +114,18 @@
                     String points = String.format("%-10s", topScore.getPoints());
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String playedOn = String.format("%-20s", dateFormat.format(topScore.getPlayedOn()));
-                    System.out.println(BLACK_BACKGROUND + rank + ". " + ANSI_RESET + BLACK_BACKGROUND + player + ANSI_RESET + BLACK_BACKGROUND + YELLOW_BOLD_BRIGHT + points + ANSI_RESET + BLACK_BACKGROUND + playedOn + ANSI_RESET);
+                    if(i == 0) {
+                        System.out.println(YELLOW_BOLD_BRIGHT + " 🥇  " + player + points + playedOn + ANSI_RESET);
+                    } else if (i == 1) {
+                        System.out.println(WHITE_BOLD_BRIGHT +  " 🥈  " + player + points + playedOn + ANSI_RESET);
+                    } else if (i == 2) {
+                        System.out.println(BROWN + " 🥉  " + player + points + playedOn + ANSI_RESET);
+                    } else {
+                        System.out.println(" " + rank + ". " + player + points + playedOn);
+                    }
                 } catch (IndexOutOfBoundsException e) { return; }
             }
-            System.out.println("\n" + BLACK_BACKGROUND + "Enter to continue" + ANSI_RESET);
+            System.out.println("\n" + GREEN_UNDERLINED + "Enter to continue" + ANSI_RESET);
             scanner.nextLine();
             scanner.nextLine();
         }
@@ -150,7 +165,8 @@
             System.out.println("6. 💌Comment                    "+ ANSI_RESET);
             System.out.println("7. 🥇Rating                     "+ ANSI_RESET);
             System.out.println();
-
+            System.out.println(WHITE_BOLD_BRIGHT + "8. ❔Help                       "+ ANSI_RESET);
+            System.out.println();
             try {
                 int input = -1;
                 input = scanner.nextInt();
@@ -158,6 +174,7 @@
                     case 1:
                         return input;
                     case 2:
+                        clearScreen();
                         return input;
                     case 3:
                         return input;
@@ -172,6 +189,8 @@
                         return input;
                     case 7:
                         clearScreen();
+                        return input;
+                    case 8:
                         return input;
                 }
             } catch (InputMismatchException e) {
@@ -189,21 +208,21 @@
         public int[] getFieldSpecs() {
             try {
                 int[] specs = new int[3];
-                System.out.print(BLACK_BACKGROUND + "Enter field x dimension: " + ANSI_RESET);
+                System.out.print(WHITE_BOLD_BRIGHT + "Enter field x dimension: " + ANSI_RESET);
                 specs[0] = scanner.nextInt();
                 while (specs[0] < 2) {
                     System.out.print(RED_UNDERLINED + "Enter field dimension bigger than 1: " + ANSI_RESET);
                     specs[0] = scanner.nextInt();
                 }
 
-                System.out.print(BLACK_BACKGROUND + "Enter field y dimension: " + ANSI_RESET);
+                System.out.print(WHITE_BOLD_BRIGHT + "Enter field y dimension: " + ANSI_RESET);
                 specs[1] = scanner.nextInt();
                 while (specs[1] < 2) {
                     System.out.print(RED_UNDERLINED + "Enter field dimension bigger than 1: " + ANSI_RESET);
                     specs[1] = scanner.nextInt();
                 }
 
-                System.out.print(BLACK_BACKGROUND + "Enter how many colors you want (maximum " + (TileInfo.values().length - 1) + "): " + ANSI_RESET);
+                System.out.print(WHITE_BOLD_BRIGHT + "Enter how many colors you want (maximum " + (TileInfo.values().length - 1) + "): " + ANSI_RESET);
                 specs[2] = scanner.nextInt();
                 while (specs[2] < 2 || specs[2] > TileInfo.values().length - 1) {
                     System.out.print(RED_UNDERLINED + "Enter more than two colors and not more than " + (TileInfo.values().length - 1) + ": " + ANSI_RESET);
@@ -283,7 +302,7 @@
 
 
         private void printLogo() {
-            System.out.println("▀█████████▄     ▄████████  ▄█   ▄████████    ▄█   ▄█▄    ▄████████                          \n" +
+            System.out.println(WHITE_BOLD_BRIGHT +"▀█████████▄     ▄████████  ▄█   ▄████████    ▄█   ▄█▄    ▄████████                          \n" +
                     "  ███    ███   ███    ███ ███  ███    ███   ███ ▄███▀   ███    ███                          \n" +
                     "  ███    ███   ███    ███ ███▌ ███    █▀    ███▐██▀     ███    █▀                           \n" +
                     " ▄███▄▄▄██▀   ▄███▄▄▄▄██▀ ███▌ ███         ▄█████▀      ███                                 \n" +
@@ -300,7 +319,7 @@
                     "  ███    ██▄ ▀███████████   ███    █▄    ███    ███   ███▐██▄   ███  ███   ███   ███    ███ \n" +
                     "  ███    ███   ███    ███   ███    ███   ███    ███   ███ ▀███▄ ███  ███   ███   ███    ███ \n" +
                     "▄█████████▀    ███    ███   ██████████   ███    █▀    ███   ▀█▀ █▀    ▀█   █▀    ████████▀  \n" +
-                    "               ███    ███                             ▀                                     \n");
+                    "               ███    ███                             ▀                                     \n" + ANSI_RESET);
         }
 
         private void printThankYou() {
@@ -338,5 +357,42 @@
         @Override
         public void passAverageRating(int rating) {
             averageRating = rating;
+        }
+
+        @Override
+        public void showWin() {
+            System.out.println(GREEN_BRIGHT + "▄██   ▄    ▄██████▄  ███    █▄       ▄█     █▄   ▄██████▄  ███▄▄▄▄   \n" +
+                    "███   ██▄ ███    ███ ███    ███     ███     ███ ███    ███ ███▀▀▀██▄ \n" +
+                    "███▄▄▄███ ███    ███ ███    ███     ███     ███ ███    ███ ███   ███ \n" +
+                    "▀▀▀▀▀▀███ ███    ███ ███    ███     ███     ███ ███    ███ ███   ███ \n" +
+                    "▄██   ███ ███    ███ ███    ███     ███     ███ ███    ███ ███   ███ \n" +
+                    "███   ███ ███    ███ ███    ███     ███     ███ ███    ███ ███   ███ \n" +
+                    "███   ███ ███    ███ ███    ███     ███ ▄█▄ ███ ███    ███ ███   ███ \n" +
+                    " ▀█████▀   ▀██████▀  ████████▀       ▀███▀███▀   ▀██████▀   ▀█   █▀  \n" +
+                    "                                                                     " + ANSI_RESET);
+        }
+
+        @Override
+        public void showFail() {
+            System.out.println(RED_BRIGHT+ "▄██   ▄    ▄██████▄  ███    █▄       ▄█        ▄██████▄     ▄████████     ███     \n" +
+                    "███   ██▄ ███    ███ ███    ███     ███       ███    ███   ███    ███ ▀█████████▄ \n" +
+                    "███▄▄▄███ ███    ███ ███    ███     ███       ███    ███   ███    █▀     ▀███▀▀██ \n" +
+                    "▀▀▀▀▀▀███ ███    ███ ███    ███     ███       ███    ███   ███            ███   ▀ \n" +
+                    "▄██   ███ ███    ███ ███    ███     ███       ███    ███ ▀███████████     ███     \n" +
+                    "███   ███ ███    ███ ███    ███     ███       ███    ███          ███     ███     \n" +
+                    "███   ███ ███    ███ ███    ███     ███▌    ▄ ███    ███    ▄█    ███     ███     \n" +
+                    " ▀█████▀   ▀██████▀  ████████▀      █████▄▄██  ▀██████▀   ▄████████▀     ▄████▀   \n" +
+                    "                                    ▀                                             \n" +
+                    "\n"+ ANSI_RESET);
+        }
+
+        @Override
+        public void showHelp() {
+            clearScreen();
+            System.out.println(WHITE_BOLD_BRIGHT + "Destroy all the bricks by clicking them in groups of the same color. \nThe more you get at once, the higher the score.\n" +
+                     RED_UNDERLINED + "If you try to remove a single brick you will lose a life!" + ANSI_RESET);
+            System.out.println("\n" + GREEN_UNDERLINED + "Enter to continue" + ANSI_RESET);
+            scanner.nextLine();
+            scanner.nextLine();
         }
     }

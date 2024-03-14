@@ -34,9 +34,8 @@ public class GameManager {
         this.scoreServiceJDBC = new ScoreServiceJDBC();
         this.commentServiceJDBC = new CommentServiceJDBC();
         this.ratingServiceJDBC = new RatingServiceJDBC();
-
-        gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
         this.topScores = scoreServiceJDBC.getTopScores(game);
+        gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
 
         mainMenu(gameUI.mainMenu());
     }
@@ -79,16 +78,17 @@ public class GameManager {
 
         } while(field.getGameState() == GameState.PLAYING);
 
-        if(field.getGameState() == GameState.SOLVED) {
-            System.out.println("Solved!");
-        } else if(field.getGameState() == GameState.FAILED){
-            System.out.println("Failed!");
-        }
-
         gameUI.showStats(score, lives);
         gameUI.showField();
 
+        if(field.getGameState() == GameState.SOLVED) {
+            gameUI.showWin();
+        } else if(field.getGameState() == GameState.FAILED){
+            gameUI.showFail();
+        }
+
         if(Objects.equals(gameMode, "classic")) {
+            this.topScores = scoreServiceJDBC.getTopScores(game);
             Score finalScore = new Score(game, player, score, new Date());
             scoreServiceJDBC.addScore(finalScore);
             topScores = scoreServiceJDBC.getTopScores(game);
@@ -140,6 +140,9 @@ public class GameManager {
                     Rating rating = new Rating(game, player, getRating, new Date());
                     ratingServiceJDBC.setRating(rating);
                 }
+                break;
+            case 8:
+                gameUI.showHelp();
                 break;
         }
         mainMenu(gameUI.mainMenu());

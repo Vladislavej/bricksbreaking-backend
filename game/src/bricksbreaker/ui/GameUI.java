@@ -19,4 +19,7 @@ public interface GameUI {
     int getRating();
     void setPlayer(String player);
     void passAverageRating(int rating);
+    void showWin();
+    void showFail();
+    void showHelp();
 }
