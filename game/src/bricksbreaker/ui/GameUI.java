@@ -14,7 +14,7 @@ public interface GameUI {
     int[] handleMove();
     void showHighScores(List<Score> topScores);
     boolean playAgain();
-    int mainMenu();
+    int showMainMenu();
     String changePlayerName();
     String addComment(List<Comment> commentList);
     int addRating();

@@ -152,7 +152,7 @@
         }
 
         @Override
-        public int mainMenu() {
+        public int showMainMenu() {
             clearScreen();
 
             printLogo();
@@ -185,7 +185,7 @@
                         return input;
                     case 5:
                         clearScreen();
-                        printThankYou();
+                        showThankYou();
                         return input;
                     case 6:
                         clearScreen();
@@ -200,7 +200,7 @@
                 clearScreen();
                 System.out.println(RED_UNDERLINED + "\uD83D\uDED1Invalid input. Pick a valid menu option. Example: '1' for Classic Game\uD83D\uDED1" + ANSI_RESET);
                 scanner.nextLine();
-                return mainMenu();
+                return showMainMenu();
             }
             clearScreen();
             System.out.println(RED_UNDERLINED + "\uD83D\uDED1Invalid input. Pick a valid menu option. Example: '1' for Classic Game\uD83D\uDED1" + ANSI_RESET);
@@ -352,7 +352,7 @@
                     "               ███    ███                             ▀                                     \n" + ANSI_RESET);
         }
 
-        private void printThankYou() {
+        private void showThankYou() {
             System.out.println("\n" +
                     "\n" +
                     "    ███        ▄█    █▄       ▄████████ ███▄▄▄▄      ▄█   ▄█▄      ▄██   ▄    ▄██████▄  ███    █▄                   \n" +

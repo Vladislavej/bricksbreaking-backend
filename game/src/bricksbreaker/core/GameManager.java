@@ -37,7 +37,7 @@ public class GameManager {
         this.ratingServiceJDBC = new RatingServiceJDBC();
         this.topScores = scoreServiceJDBC.getTopScores(game);
 
-        mainMenu(gameUI.mainMenu());
+        mainMenu(gameUI.showMainMenu());
     }
     private Field initialiazeField() {
         int[] fieldSpec = gameUI.getFieldSpecs();
@@ -69,7 +69,7 @@ public class GameManager {
             gameUI.showField();
 
             int[] coordinates = gameUI.handleMove();
-            if(coordinates == null) { mainMenu(gameUI.mainMenu()); }
+            if(coordinates == null) { mainMenu(gameUI.showMainMenu()); }
 
             field.breakTile(coordinates[0], coordinates[1]);
 
@@ -96,7 +96,7 @@ public class GameManager {
             gameUI.showHighScores(topScores);
         }
 
-        if(gameUI.playAgain()) { play(gameMode); } else { mainMenu(gameUI.mainMenu()); }
+        if(gameUI.playAgain()) { play(gameMode); } else { mainMenu(gameUI.showMainMenu()); }
     }
 
     public void calculateStats() {
@@ -149,7 +149,7 @@ public class GameManager {
                 gameUI.showHelp();
                 break;
         }
-        mainMenu(gameUI.mainMenu());
+        mainMenu(gameUI.showMainMenu());
     }
 
     public String getPlayer() {
