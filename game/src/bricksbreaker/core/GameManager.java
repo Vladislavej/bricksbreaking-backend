@@ -69,6 +69,7 @@ public class GameManager {
             gameUI.showField();
 
             int[] coordinates = gameUI.handleMove();
+            if(coordinates == null) { mainMenu(gameUI.mainMenu()); }
 
             field.breakTile(coordinates[0], coordinates[1]);
 

@@ -78,11 +78,16 @@
         public int[] handleMove() {
             try {
                 int[] coordinates = new int[2];
-                System.out.print(WHITE_BOLD_BRIGHT + " Enter x and y coordinates of your move: " + ANSI_RESET + " ");
-                coordinates[0] = scanner.nextInt();
-                coordinates[1] = scanner.nextInt();
-                return coordinates;
-            } catch (InputMismatchException e) {
+                System.out.print(WHITE_BOLD_BRIGHT + " Enter x and y coordinates of your move (or type 'quit' to exit): " + ANSI_RESET + " ");
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("quit")) {
+                    return null;
+                } else {
+                    coordinates[0] = Integer.parseInt(input);
+                    coordinates[1] = scanner.nextInt();
+                    return coordinates;
+                }
+            } catch (InputMismatchException | NumberFormatException e) {
                 System.out.println(RED_UNDERLINED + "\uD83D\uDED1Invalid input. Correct input example: '4 8'\uD83D\uDED1" + ANSI_RESET);
                 scanner.nextLine();
                 return handleMove();
