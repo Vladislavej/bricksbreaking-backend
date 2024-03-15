@@ -1,6 +1,7 @@
 package bricksbreaker.ui;
 
 import bricksbreaker.core.Field;
+import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Score;
 
 import java.util.List;
@@ -14,11 +15,12 @@ public interface GameUI {
     void showHighScores(List<Score> topScores);
     boolean playAgain();
     int mainMenu();
-    String playerName();
-    String getComment();
-    int getRating();
+    String changePlayerName();
+    String addComment(List<Comment> commentList);
+    int addRating();
     void setPlayer(String player);
     void passAverageRating(int rating);
+    void passLastRating(int rating);
     void showWin();
     void showFail();
     void showHelp();

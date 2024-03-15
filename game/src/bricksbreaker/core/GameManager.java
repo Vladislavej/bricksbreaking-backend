@@ -21,6 +21,7 @@ public class GameManager {
     private CommentServiceJDBC commentServiceJDBC;
     private RatingServiceJDBC ratingServiceJDBC;
     private List<Score> topScores;
+    private List<Comment> commentList;
     private GameUI gameUI;
     private String player;
     private String game;
@@ -35,7 +36,6 @@ public class GameManager {
         this.commentServiceJDBC = new CommentServiceJDBC();
         this.ratingServiceJDBC = new RatingServiceJDBC();
         this.topScores = scoreServiceJDBC.getTopScores(game);
-        gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
 
         mainMenu(gameUI.mainMenu());
     }
@@ -122,20 +122,23 @@ public class GameManager {
                 gameUI.showHighScores(topScores);
                 break;
             case 4:
-                player = gameUI.playerName();
+                player = gameUI.changePlayerName();
                 break;
             case 5:
                 System.exit(0);
                 return;
             case 6:
-                String getComment = gameUI.getComment();
+                commentList = commentServiceJDBC.getComments(game);
+                String getComment = gameUI.addComment(commentList);
                 if(getComment != null) {
                     Comment comment = new Comment(game, player, getComment, new Date());
                     commentServiceJDBC.addComment(comment);
                 }
                 break;
             case 7:
-                int getRating = gameUI.getRating();
+                gameUI.passLastRating(ratingServiceJDBC.getRating(game,player));
+                gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
+                int getRating = gameUI.addRating();
                 if(getRating != -1) {
                     Rating rating = new Rating(game, player, getRating, new Date());
                     ratingServiceJDBC.setRating(rating);

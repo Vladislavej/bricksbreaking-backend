@@ -1,11 +1,10 @@
     package bricksbreaker.ui.console;
 
     import bricksbreaker.core.Field;
-    import bricksbreaker.core.GameManager;
     import bricksbreaker.core.Tile;
     import bricksbreaker.core.TileInfo;
     import bricksbreaker.ui.GameUI;
-    import org.checkerframework.checker.units.qual.A;
+    import sk.tuke.gamestudio.entity.Comment;
     import sk.tuke.gamestudio.entity.Score;
 
     import java.text.SimpleDateFormat;
@@ -35,6 +34,7 @@
         private Field field;
         private String player;
         private int averageRating;
+        private int lastRating;
 
         public ConsoleUI(Field field) {
             scanner = new Scanner(System.in);
@@ -123,7 +123,7 @@
                     } else {
                         System.out.println(" " + rank + ". " + player + points + playedOn);
                     }
-                } catch (IndexOutOfBoundsException e) { return; }
+                } catch (IndexOutOfBoundsException e) { break; }
             }
             System.out.println("\n" + GREEN_UNDERLINED + "Enter to continue" + ANSI_RESET);
             scanner.nextLine();
@@ -133,17 +133,15 @@
         @Override
         public boolean playAgain() {
             System.out.println();
-            System.out.println(BLACK_BACKGROUND + "Do you want to play again? (yes/no)" + ANSI_RESET);
+            System.out.println(WHITE_BOLD_BRIGHT + "Type 'yes' to play again or press enter to continue" + ANSI_RESET);
             while(true) {
                 String input = scanner.nextLine();
                 if (input.toLowerCase().equals("yes")) {
                     clearScreen();
                     return true;
-                } else if (input.toLowerCase().equals("no")) {
+                } else {
                     clearScreen();
                     return false;
-                } else {
-                    System.out.println(RED_UNDERLINED + "\uD83D\uDED1Didnt get a valid answer!\uD83D\uDED1" + ANSI_RESET);
                 }
             }
         }
@@ -162,8 +160,8 @@
 
             System.out.println();
 
-            System.out.println("6. 💌Comment                    "+ ANSI_RESET);
-            System.out.println("7. 🥇Rating                     "+ ANSI_RESET);
+            System.out.println("6. 💌Comments                   "+ ANSI_RESET);
+            System.out.println("7. 🥇Ratings                    "+ ANSI_RESET);
             System.out.println();
             System.out.println(WHITE_BOLD_BRIGHT + "8. ❔Help                       "+ ANSI_RESET);
             System.out.println();
@@ -238,7 +236,7 @@
         }
 
         @Override
-        public String playerName() {
+        public String changePlayerName() {
             clearScreen();
             System.out.println(YELLOW_BOLD_BRIGHT + "😎Enter new name😜" + ANSI_RESET);
             String input = scanner.nextLine();
@@ -256,12 +254,25 @@
         }
 
         @Override
-        public String getComment() {
+        public String addComment(List<Comment> commentList) {
             clearScreen();
-            System.out.println(YELLOW_BOLD_BRIGHT + "💬Add a new comment or type cancel💬" + ANSI_RESET);
+            System.out.println(YELLOW_BOLD_BRIGHT + "Most recent comments:" + ANSI_RESET);
+            for (int i = 0; i < 10; i++) {
+                try {
+                    Comment comment = commentList.get(i);
+                    String rank = String.format("%-2d", i + 1);
+                    String player = String.format("%-20s", comment.getPlayer());
+                    String text = String.format(comment.getComment());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String playedOn = String.format("%-20s", dateFormat.format(comment.getCommentedOn()));
+                    System.out.println(player + playedOn + WHITE_BOLD_BRIGHT + text + ANSI_RESET);
+
+                } catch (IndexOutOfBoundsException e) { break; }
+            }
+            System.out.println(YELLOW_BOLD_BRIGHT + "💬Add a new comment or press enter💬" + ANSI_RESET);
             String input = scanner.nextLine();
             input = scanner.nextLine();
-            if(Objects.equals(input.toLowerCase(), "cancel")) {
+            if(Objects.equals(input.toLowerCase(), "")) {
                 System.out.println(RED_UNDERLINED + "\uD83D\uDED1Comment canceled\uD83D\uDED1" + ANSI_RESET);
                 waitConsole(1000);
                 return null;
@@ -272,13 +283,26 @@
         }
 
         @Override
-        public int getRating() {
+        public int addRating() {
+            System.out.println(YELLOW_BOLD_BRIGHT + "🥇Rate the game 1-5 or press enter🥇" + ANSI_RESET);
+            if(lastRating != -1) {
+                System.out.print(WHITE_BOLD_BRIGHT + "My last rating: " + ANSI_RESET);
+                for (int i = 0; i < lastRating; i++) {
+                    System.out.print("⭐");
+                }
+            }
+            System.out.println();
+            System.out.print(WHITE_BOLD_BRIGHT + "Average rating: " + ANSI_RESET);
+            for (int i = 0; i < averageRating; i++) {
+                System.out.print("⭐");
+            }
+            System.out.println();
+
             try {
                 String input = scanner.nextLine();
+                input = scanner.nextLine();
 
-                if(Objects.equals(input.toLowerCase(), "cancel")) {
-                    System.out.println(RED_UNDERLINED + "\uD83D\uDED1Rating canceled\uD83D\uDED1" + ANSI_RESET);
-                    waitConsole(1000);
+                if(Objects.equals(input.toLowerCase(), "")) {
                     return -1;
                 }
 
@@ -289,9 +313,10 @@
                 waitConsole(1000);
                 return rating;
             } catch (InputMismatchException | NumberFormatException e) {
-                System.out.println(YELLOW_BOLD_BRIGHT + "🥇Rate the game 1-5 or type cancel🥇" + ANSI_RESET);
-                System.out.println(YELLOW_BOLD_BRIGHT + "Average rating: " + averageRating + ANSI_RESET);
-                return getRating();
+                System.out.println(RED_UNDERLINED + "\uD83D\uDED1Rating out of bounds\uD83D\uDED1" + ANSI_RESET);
+                waitConsole(1000);
+                clearScreen();
+                return addRating();
             }
         }
 
@@ -360,6 +385,9 @@
         }
 
         @Override
+        public void passLastRating(int rating) { lastRating = rating; }
+
+        @Override
         public void showWin() {
             System.out.println(GREEN_BRIGHT + "▄██   ▄    ▄██████▄  ███    █▄       ▄█     █▄   ▄██████▄  ███▄▄▄▄   \n" +
                     "███   ██▄ ███    ███ ███    ███     ███     ███ ███    ███ ███▀▀▀██▄ \n" +
@@ -391,6 +419,10 @@
             clearScreen();
             System.out.println(WHITE_BOLD_BRIGHT + "Destroy all the bricks by clicking them in groups of the same color. \nThe more you get at once, the higher the score.\n" +
                      RED_UNDERLINED + "If you try to remove a single brick you will lose a life!" + ANSI_RESET);
+            System.out.println(WHITE_BOLD_BRIGHT + "🟥 - 1   point" + ANSI_RESET);
+            System.out.println(WHITE_BOLD_BRIGHT + "🟩 - 8   points" + ANSI_RESET);
+            System.out.println(WHITE_BOLD_BRIGHT + "🟦 - 32  points" + ANSI_RESET);
+            System.out.println(WHITE_BOLD_BRIGHT + "🟨 - 128 points" + ANSI_RESET);
             System.out.println("\n" + GREEN_UNDERLINED + "Enter to continue" + ANSI_RESET);
             scanner.nextLine();
             scanner.nextLine();

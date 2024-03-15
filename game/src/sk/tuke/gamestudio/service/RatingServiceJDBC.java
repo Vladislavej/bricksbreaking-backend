@@ -80,8 +80,22 @@ public class RatingServiceJDBC implements  RatingService {
 
     @Override
     public int getRating(String game, String player) throws RatingException {
-        return 0;
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement("SELECT rating FROM rating WHERE game = ? AND player = ?");
+        ) {
+            statement.setString(1, game);
+            statement.setString(2, player);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("rating");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RatingException("Problem getting rating", e);
+        }
+        return -1;
     }
+
 
     @Override
     public void reset() throws RatingException {
