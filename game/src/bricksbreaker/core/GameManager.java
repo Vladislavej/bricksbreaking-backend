@@ -64,29 +64,10 @@ public class GameManager {
     }
     public void play(String gameMode) {
         prepareGame(gameMode);
-        do {
-            gameUI.showStats(score, lives);
-            gameUI.showField();
 
-            int[] coordinates = gameUI.handleMove();
-            if(coordinates == null) { mainMenu(gameUI.showMainMenu()); }
+        gameLoop();
 
-            field.breakTile(coordinates[0], coordinates[1]);
-
-            calculateStats();
-            field.unite();
-            field.updateGameState();
-
-        } while(field.getGameState() == GameState.PLAYING);
-
-        gameUI.showStats(score, lives);
-        gameUI.showField();
-
-        if(field.getGameState() == GameState.SOLVED) {
-            gameUI.showWin();
-        } else if(field.getGameState() == GameState.FAILED){
-            gameUI.showFail();
-        }
+        gameOver();
 
         if(Objects.equals(gameMode, "classic")) {
             this.topScores = scoreServiceJDBC.getTopScores(game);
@@ -109,7 +90,7 @@ public class GameManager {
         field.setScoreThisMove(0);
     }
 
-    private void mainMenu(int i) {
+    public void mainMenu(int i) {
         if(field != null) {
             score = 0;
             field = null;
@@ -186,5 +167,40 @@ public class GameManager {
 
     public int getLives() {
         return lives;
+    }
+
+    private void gameLoop() {
+        do {
+            gameUI.showStats(score, lives);
+            gameUI.showField();
+
+            int[] coordinates = gameUI.handleMove();
+            if(coordinates == null) { mainMenu(gameUI.showMainMenu()); }
+            field.breakTile(coordinates[0], coordinates[1]);
+
+            calculateStats();
+            field.unite();
+            field.updateGameState();
+
+        } while(field.getGameState() == GameState.PLAYING);
+    }
+
+    private void gameOver() {
+        gameUI.showStats(score, lives);
+        gameUI.showField();
+
+        if(field.getGameState() == GameState.SOLVED) {
+            gameUI.showWin();
+        } else if(field.getGameState() == GameState.FAILED){
+            gameUI.showFail();
+        }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public GameUI getGameUI() {
+        return gameUI;
     }
 }
