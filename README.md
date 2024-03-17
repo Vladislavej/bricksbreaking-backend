@@ -20,7 +20,7 @@ To play Bricks Breaking, follow these simple steps:
 ## Features
 
 - Simple and intuitive gameplay.
-- Randomly generated graphics.
+- Randomly generated levels.
 - Colorful graphics.
 - Custom game mode.
 - Leaderboard.
