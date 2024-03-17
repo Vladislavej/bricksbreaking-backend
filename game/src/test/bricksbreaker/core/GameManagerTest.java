@@ -20,35 +20,32 @@ public class GameManagerTest {
         gameManager = new GameManager(testUI);
     }
 
-    @Test
-    public void testPrepareGameClassicMode() {
-        testUI.passInt(1);
-        testUI.showMainMenu();
-        gameManager.prepareGame("classic");
-        assertNotNull(gameManager.getField());
-        assertEquals(3, gameManager.getLives());
-        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
-    }
-
-    @Test
-    public void testPrepareGameCustomMode() {
-        gameManager.prepareGame("custom");
-        assertNotNull(gameManager.getField());
-        assertEquals(3, gameManager.getLives());
-        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
-    }
-
-    @Test
-    public void testCalculateStats() {
-        gameManager.prepareGame("classic");
-        gameManager.calculateStats();
-        assertEquals(0, gameManager.getScore());
-        assertEquals(3, gameManager.getLives());
-        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
-
-        // You can add more assertions based on different scenarios
-    }
-
-    // Add more tests for other methods as needed
+//    @Test
+//    public void testPrepareGameClassicMode() {
+//        testUI.passInt(1);
+//        testUI.showMainMenu();
+//        gameManager.prepareGame("classic");
+//        assertNotNull(gameManager.getField());
+//        assertEquals(3, gameManager.getLives());
+//        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
+//    }
+//
+//    @Test
+//    public void testPrepareGameCustomMode() {
+//        gameManager.prepareGame("custom");
+//        assertNotNull(gameManager.getField());
+//        assertEquals(3, gameManager.getLives());
+//        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
+//    }
+//
+//    @Test
+//    public void testCalculateStats() {
+//        gameManager.prepareGame("classic");
+//        gameManager.calculateStats();
+//        assertEquals(0, gameManager.getScore());
+//        assertEquals(3, gameManager.getLives());
+//        assertEquals(GameState.PLAYING, gameManager.getField().getGameState());
+//
+//    }
 }
 

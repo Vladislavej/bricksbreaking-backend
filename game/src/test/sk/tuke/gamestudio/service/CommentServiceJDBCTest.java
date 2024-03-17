@@ -20,12 +20,10 @@ public class CommentServiceJDBCTest {
 
     @Test
     void addCommentAndGetComments() {
-        // Add some comments
         commentService.addComment(new Comment(TEST_GAME, "Player1", "Great game!", new java.util.Date()));
         commentService.addComment(new Comment(TEST_GAME, "Player2", "Awesome!", new java.util.Date()));
         commentService.addComment(new Comment(TEST_GAME, "Player3", "I love it!", new java.util.Date()));
 
-        // Retrieve comments
         List<Comment> comments = commentService.getComments(TEST_GAME);
 
         // Check if the comments are retrieved correctly
@@ -37,11 +35,9 @@ public class CommentServiceJDBCTest {
 
     @Test
     void resetComments() {
-        // Add some comments
         commentService.addComment(new Comment(TEST_GAME, "Player1", "Nice game!", new java.util.Date()));
         commentService.addComment(new Comment(TEST_GAME, "Player2", "Good job!", new java.util.Date()));
 
-        // Reset comments
         commentService.reset();
 
         // Check if no comments exist after reset
