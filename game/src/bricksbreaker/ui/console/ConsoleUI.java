@@ -279,7 +279,6 @@
             input = scanner.nextLine();
             if(Objects.equals(input.toLowerCase(), "")) {
                 System.out.println(RED_UNDERLINED + "\uD83D\uDED1Comment canceled\uD83D\uDED1" + ANSI_RESET);
-                waitConsole(1000);
                 return null;
             }
             System.out.println(GREEN_UNDERLINED + "💚Added a new comment💚" + ANSI_RESET);
