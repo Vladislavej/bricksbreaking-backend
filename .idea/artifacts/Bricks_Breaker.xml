@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Bricks Breaker">
+    <output-path>$PROJECT_DIR$/out/artifacts/Bricks_Breaker</output-path>
+    <root id="archive" name="Bricks Breaker.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
