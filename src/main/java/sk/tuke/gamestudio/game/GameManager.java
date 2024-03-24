@@ -1,11 +1,10 @@
 package sk.tuke.gamestudio.game;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.service.CommentServiceJDBC;
-import sk.tuke.gamestudio.service.RatingServiceJDBC;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.*;
 import sk.tuke.gamestudio.game.ui.GameUI;
 
 import java.util.Date;
@@ -17,9 +16,12 @@ public class GameManager {
     private int score;
     private int lives;
     private int numColors;
-    private ScoreServiceJDBC scoreServiceJDBC;
-    private CommentServiceJDBC commentServiceJDBC;
-    private RatingServiceJDBC ratingServiceJDBC;
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private CommentService commentService;
     private List<Score> topScores;
     private List<Comment> commentList;
     private GameUI gameUI;
@@ -31,11 +33,6 @@ public class GameManager {
         this.player = "Player";
         this.game = "Bricks Breaking";
         gameUI.setPlayer(player);
-
-        this.scoreServiceJDBC = new ScoreServiceJDBC();
-        this.commentServiceJDBC = new CommentServiceJDBC();
-        this.ratingServiceJDBC = new RatingServiceJDBC();
-        this.topScores = scoreServiceJDBC.getTopScores(game);
 
         mainMenu(gameUI.showMainMenu());
     }
@@ -70,10 +67,10 @@ public class GameManager {
         gameOver();
 
         if(Objects.equals(gameMode, "classic")) {
-            this.topScores = scoreServiceJDBC.getTopScores(game);
+            this.topScores = scoreService.getTopScores(game);
             Score finalScore = new Score(game, player, score, new Date());
-            scoreServiceJDBC.addScore(finalScore);
-            topScores = scoreServiceJDBC.getTopScores(game);
+            scoreService.addScore(finalScore);
+            topScores = scoreService.getTopScores(game);
             gameUI.showHighScores(topScores);
         }
 
@@ -110,20 +107,20 @@ public class GameManager {
                 System.exit(0);
                 return;
             case 6:
-                commentList = commentServiceJDBC.getComments(game);
+                commentList = commentService.getComments(game);
                 String getComment = gameUI.addComment(commentList);
                 if(getComment != null) {
                     Comment comment = new Comment(game, player, getComment, new Date());
-                    commentServiceJDBC.addComment(comment);
+                    commentService.addComment(comment);
                 }
                 break;
             case 7:
-                gameUI.passLastRating(ratingServiceJDBC.getRating(game,player));
-                gameUI.passAverageRating(ratingServiceJDBC.getAverageRating(game));
+                gameUI.passLastRating(ratingService.getRating(game,player));
+                gameUI.passAverageRating(ratingService.getAverageRating(game));
                 int getRating = gameUI.addRating();
                 if(getRating != -1) {
                     Rating rating = new Rating(game, player, getRating, new Date());
-                    ratingServiceJDBC.setRating(rating);
+                    ratingService.setRating(rating);
                 }
                 break;
             case 8:
@@ -135,30 +132,6 @@ public class GameManager {
 
     public String getPlayer() {
         return player;
-    }
-
-    public ScoreServiceJDBC getScoreServiceJDBC() {
-        return scoreServiceJDBC;
-    }
-
-    public void setScoreServiceJDBC(ScoreServiceJDBC scoreServiceJDBC) {
-        this.scoreServiceJDBC = scoreServiceJDBC;
-    }
-
-    public CommentServiceJDBC getCommentServiceJDBC() {
-        return commentServiceJDBC;
-    }
-
-    public void setCommentServiceJDBC(CommentServiceJDBC commentServiceJDBC) {
-        this.commentServiceJDBC = commentServiceJDBC;
-    }
-
-    public RatingServiceJDBC getRatingServiceJDBC() {
-        return ratingServiceJDBC;
-    }
-
-    public void setRatingServiceJDBC(RatingServiceJDBC ratingServiceJDBC) {
-        this.ratingServiceJDBC = ratingServiceJDBC;
     }
 
     public Field getField() {
