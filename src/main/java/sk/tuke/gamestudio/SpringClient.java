@@ -4,12 +4,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import sk.tuke.gamestudio.game.Field;
 import sk.tuke.gamestudio.game.GameManager;
 import sk.tuke.gamestudio.game.ui.console.ConsoleUI;
 import sk.tuke.gamestudio.service.*;
 
 @SpringBootApplication
+@Configuration
 public class SpringClient {
 
     public static void main(String[] args) {
@@ -17,8 +19,8 @@ public class SpringClient {
     }
 
     @Bean
-    public CommandLineRunner runner() {
-        return args -> gameManager(consoleUI());
+    public CommandLineRunner runner(GameManager gameManager, ConsoleUI consoleUI) {
+        return args -> gameManager.setGameUI(consoleUI);
     }
 
     @Bean

@@ -176,4 +176,8 @@ public class GameManager {
     public GameUI getGameUI() {
         return gameUI;
     }
+
+    public void setGameUI(GameUI gameUI) {
+        this.gameUI = gameUI;
+    }
 }
