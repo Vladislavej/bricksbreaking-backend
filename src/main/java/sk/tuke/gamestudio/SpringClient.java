@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sk.tuke.gamestudio.game.Field;
 import sk.tuke.gamestudio.game.GameManager;
 import sk.tuke.gamestudio.game.ui.console.ConsoleUI;
 import sk.tuke.gamestudio.service.*;
@@ -19,8 +18,8 @@ public class SpringClient {
     }
 
     @Bean
-    public CommandLineRunner runner(GameManager gameManager, ConsoleUI consoleUI) {
-        return args -> gameManager.setGameUI(consoleUI);
+    public CommandLineRunner runner(GameManager gameManager) {
+        return args -> gameManager.execute();
     }
 
     @Bean

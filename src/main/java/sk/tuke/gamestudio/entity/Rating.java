@@ -1,23 +1,20 @@
 package sk.tuke.gamestudio.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@NamedQuery(
-        name = "Rating.getAverageRating",
+@NamedQuery( name = "Rating.getAverageRating",
         query = "SELECT AVG(r.rating) FROM Rating r WHERE r.game=:game")
 @NamedQuery( name = "Rating.resetRatings",
         query = "DELETE FROM Rating")
 @NamedQuery( name = "Rating.getRating",
-        query = "SELECT r.rating FROM Rating r WHERE r.game = :game AND r.player = :player"
-)
+        query = "SELECT r.rating FROM Rating r WHERE r.game =:game AND r.player =:player")
+@NamedQuery(name = "Rating.setOrUpdateRating",
+        query = "UPDATE Rating r SET r.rating = :rating, r.ratedOn = :ratedOn WHERE r.game = :game AND r.player = :player")
 public class Rating implements Serializable {
     @Id
     @GeneratedValue

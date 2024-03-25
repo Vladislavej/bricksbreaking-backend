@@ -1,16 +1,13 @@
 package sk.tuke.gamestudio.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @NamedQuery( name = "Comment.getComments",
-        query = "SELECT c FROM Comment c WHERE c.game=:game ORDER BY c.commentedOn DESC")
+        query = "SELECT c FROM Comment c WHERE c.game= :game ORDER BY c.commentedOn DESC")
 @NamedQuery( name = "Comment.resetComments",
         query = "DELETE FROM Comment")
 public class Comment {

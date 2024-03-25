@@ -128,7 +128,7 @@
                     } else {
                         System.out.println(" " + rank + ". " + player + points + playedOn);
                     }
-                } catch (IndexOutOfBoundsException e) { break; }
+                } catch (IndexOutOfBoundsException | NullPointerException e) { break; }
             }
             System.out.println("\n" + GREEN_UNDERLINED + "Enter to continue" + ANSI_RESET);
             scanner.nextLine();

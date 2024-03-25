@@ -33,8 +33,6 @@ public class GameManager {
         this.player = "Player";
         this.game = "Bricks Breaking";
         gameUI.setPlayer(player);
-
-        mainMenu(gameUI.showMainMenu());
     }
     private Field initialiazeField() {
         int[] fieldSpec = gameUI.getFieldSpecs();
@@ -179,5 +177,10 @@ public class GameManager {
 
     public void setGameUI(GameUI gameUI) {
         this.gameUI = gameUI;
+    }
+
+    public void execute() {
+        topScores = scoreService.getTopScores(game);
+        mainMenu(gameUI.showMainMenu());
     }
 }
