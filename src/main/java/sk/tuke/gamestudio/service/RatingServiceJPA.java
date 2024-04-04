@@ -1,6 +1,7 @@
 package sk.tuke.gamestudio.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
@@ -16,17 +17,13 @@ public class RatingServiceJPA implements RatingService{
         if (rating.getRating() < 0 || rating.getRating() > 5) {
             throw new RatingException("Rating value out of range");
         }
-
-        try {
-            entityManager.createNamedQuery("Rating.setOrUpdateRating")
+            entityManager.createNamedQuery("Rating.UpdateRating")
                     .setParameter("rating", rating.getRating())
                     .setParameter("ratedOn", rating.getRatedOn())
                     .setParameter("game", rating.getGame())
                     .setParameter("player", rating.getPlayer())
                     .executeUpdate();
-        } catch (Exception e) {
-            throw new RatingException("Problem setting or updating rating", e);
-        }
+            entityManager.persist(rating);
     }
 
 
@@ -37,19 +34,23 @@ public class RatingServiceJPA implements RatingService{
             double averageRating = ((Number) result).doubleValue();
             return (int) Math.round(averageRating);
         } else {
-            throw new RatingException("No rating found for the specified game: " + game);
+            return 0;
         }
     }
 
 
     @Override
     public int getRating(String game, String player) throws RatingException {
-        Object result = entityManager.createNamedQuery("Rating.getRating").setParameter("game", game).setParameter("player", player).getSingleResult();
-        if (result != null) {
-            double rating = ((Number) result).doubleValue();
-            return (int) Math.round(rating);
-        } else {
-            throw new RatingException("No rating found for the specified game: " + game);
+        try {
+            Object result = entityManager.createNamedQuery("Rating.getRating").setParameter("game", game).setParameter("player", player).getSingleResult();
+            if (result != null) {
+                double rating = ((Number) result).doubleValue();
+                return (int) Math.round(rating);
+            } else {
+                return 0;
+            }
+        } catch (NoResultException e) {
+            return 0;
         }
     }
 
