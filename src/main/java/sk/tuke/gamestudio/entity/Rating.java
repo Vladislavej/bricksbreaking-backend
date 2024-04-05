@@ -13,8 +13,7 @@ import java.util.Date;
         query = "DELETE FROM Rating")
 @NamedQuery( name = "Rating.getRating",
         query = "SELECT r.rating FROM Rating r WHERE r.game =:game AND r.player =:player")
-@NamedQuery(name = "Rating.UpdateRating",
-        query = "UPDATE Rating r SET r.rating = :rating, r.ratedOn = :ratedOn WHERE r.game = :game AND r.player = :player")
+@NamedQuery(name = "Rating.updateRating", query = "UPDATE Rating r SET r.rating = :rating, r.ratedOn = :rated_on WHERE r.game = :game AND r.player = :player")
 public class Rating implements Serializable {
     @Id
     @GeneratedValue

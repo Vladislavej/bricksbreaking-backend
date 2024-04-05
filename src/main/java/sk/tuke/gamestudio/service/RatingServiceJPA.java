@@ -3,6 +3,7 @@ package sk.tuke.gamestudio.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import sk.tuke.gamestudio.entity.Rating;
@@ -14,16 +15,17 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public void setRating(Rating rating) throws RatingException {
-        if (rating.getRating() < 0 || rating.getRating() > 5) {
-            throw new RatingException("Rating value out of range");
-        }
-            entityManager.createNamedQuery("Rating.UpdateRating")
-                    .setParameter("rating", rating.getRating())
-                    .setParameter("ratedOn", rating.getRatedOn())
-                    .setParameter("game", rating.getGame())
-                    .setParameter("player", rating.getPlayer())
-                    .executeUpdate();
+        if(getRating(rating.getGame(),rating.getPlayer())== 0) {
             entityManager.persist(rating);
+        }
+        else{
+            Query updateQuery = entityManager.createNamedQuery("Rating.updateRating");
+            updateQuery.setParameter("rating",rating.getRating());
+            updateQuery.setParameter("game",rating.getGame());
+            updateQuery.setParameter("player",rating.getPlayer());
+            updateQuery.setParameter("rated_on",rating.getRatedOn());
+            updateQuery.executeUpdate();
+        }
     }
 
 
