@@ -243,7 +243,7 @@
         @Override
         public String changePlayerName() {
             clearScreen();
-            System.out.println(YELLOW_BOLD_BRIGHT + "😎Enter new name😜" + ANSI_RESET);
+            System.out.println(YELLOW_BOLD_BRIGHT + "😎Enter a new name😜" + ANSI_RESET);
             String input = scanner.nextLine();
             input = scanner.nextLine();
             player = input;
@@ -313,7 +313,7 @@
                 int rating = Integer.parseInt(input);
 
                 if(rating > 5 || rating < 0) { throw new InputMismatchException("Rating out of bounds"); }
-                System.out.println(GREEN_UNDERLINED + "💚Rated the game💚" + ANSI_RESET);
+                System.out.println(GREEN_UNDERLINED + "💚Thank you for rating💚" + ANSI_RESET);
                 waitConsole(1000);
                 return rating;
             } catch (InputMismatchException | NumberFormatException e) {
@@ -352,7 +352,7 @@
         }
 
         private void showThankYou() {
-            System.out.println("\n" +
+            System.out.println(WHITE_BOLD_BRIGHT +"\n" +
                     "\n" +
                     "    ███        ▄█    █▄       ▄████████ ███▄▄▄▄      ▄█   ▄█▄      ▄██   ▄    ▄██████▄  ███    █▄                   \n" +
                     "▀█████████▄   ███    ███     ███    ███ ███▀▀▀██▄   ███ ▄███▀      ███   ██▄ ███    ███ ███    ███                  \n" +

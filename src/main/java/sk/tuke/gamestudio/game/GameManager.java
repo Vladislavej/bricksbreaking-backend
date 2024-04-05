@@ -151,7 +151,7 @@ public class GameManager {
 
             calculateStats();
             field.unite();
-            //field.updateGameState();
+            field.updateGameState();
 
         } while(field.getGameState() == GameState.PLAYING);
     }
