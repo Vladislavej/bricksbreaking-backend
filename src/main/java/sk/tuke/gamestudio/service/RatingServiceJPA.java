@@ -19,7 +19,7 @@ public class RatingServiceJPA implements RatingService{
             entityManager.persist(rating);
         }
         else{
-            Query updateQuery = entityManager.createNamedQuery("Rating.updateRating");
+            Query updateQuery = entityManager.createQuery("UPDATE Rating r SET r.rating = :rating, r.ratedOn = :rated_on WHERE r.game = :game AND r.player = :player");
             updateQuery.setParameter("rating",rating.getRating());
             updateQuery.setParameter("game",rating.getGame());
             updateQuery.setParameter("player",rating.getPlayer());
@@ -31,7 +31,9 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getAverageRating(String game) throws RatingException {
-        Object result = entityManager.createNamedQuery("Rating.getAverageRating").setParameter("game", game).getSingleResult();
+        Object result = entityManager.createQuery("SELECT AVG(r.rating) FROM Rating r WHERE r.game=:game")
+                .setParameter("game", game)
+                .getSingleResult();
         if (result != null) {
             double averageRating = ((Number) result).doubleValue();
             return (int) Math.round(averageRating);
@@ -44,7 +46,10 @@ public class RatingServiceJPA implements RatingService{
     @Override
     public int getRating(String game, String player) throws RatingException {
         try {
-            Object result = entityManager.createNamedQuery("Rating.getRating").setParameter("game", game).setParameter("player", player).getSingleResult();
+            Object result = entityManager.createQuery("SELECT r.rating FROM Rating r WHERE r.game =:game AND r.player =:player")
+                    .setParameter("game", game)
+                    .setParameter("player", player)
+                    .getSingleResult();
             if (result != null) {
                 double rating = ((Number) result).doubleValue();
                 return (int) Math.round(rating);
@@ -58,8 +63,6 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public void reset() {
-        entityManager.createNamedQuery("Rating.resetRatings").executeUpdate();
-        // alebo:
-        // entityManager.createNativeQuery("delete from score").executeUpdate();
+        entityManager.createNativeQuery("delete from rating").executeUpdate();
     }
 }

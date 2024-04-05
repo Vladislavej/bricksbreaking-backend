@@ -8,6 +8,7 @@ import sk.tuke.gamestudio.entity.Comment;
 import java.util.List;
 
 @Transactional
+//@Service
 public class CommentServiceJPA implements CommentService{
     @PersistenceContext
     private EntityManager entityManager;
@@ -19,14 +20,13 @@ public class CommentServiceJPA implements CommentService{
 
     @Override
     public List<Comment> getComments(String game) throws CommentException {
-        return entityManager.createNamedQuery("Comment.getComments")
-                .setParameter("game", game).getResultList();
+        return entityManager.createQuery("SELECT c FROM Comment c WHERE c.game= :game ORDER BY c.commentedOn DESC")
+                .setParameter("game", game)
+                .getResultList();
     }
 
     @Override
     public void reset() {
-        entityManager.createNamedQuery("Comment.resetComments").executeUpdate();
-        // alebo:
-        // entityManager.createNativeQuery("delete from score").executeUpdate();
+        entityManager.createNativeQuery("DELETE FROM comment").executeUpdate();
     }
 }
