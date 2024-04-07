@@ -6,7 +6,8 @@ Bricks Breaking is a simple yet addictive puzzle game. The objective of the game
 
 ## Demo
 
-Watch the demo on [YouTube](https://youtu.be/8qL7d96ftIo) to see the gameplay in action.
+1. Odovzdávka [YouTube](https://youtu.be/8qL7d96ftIo) gameplay.
+2. Odovzdávka [YouTube](https://youtu.be/6HiNzos8yHo) JPA + REST.
 
 ## How to Play
 
@@ -26,3 +27,6 @@ To play Bricks Breaking, follow these simple steps:
 - Leaderboard.
 - Comment board.
 - Built in rating system.
+- REST
+- JPA
+- JBCD
