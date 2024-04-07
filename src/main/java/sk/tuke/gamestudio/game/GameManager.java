@@ -31,7 +31,7 @@ public class GameManager {
     public GameManager(GameUI gameUI) {
         this.gameUI = gameUI;
         this.player = "Player";
-        this.game = "Bricks Breaking";
+        this.game = "bricksbreaking";
         gameUI.setPlayer(player);
     }
     private Field initialiazeField() {
@@ -96,6 +96,7 @@ public class GameManager {
             case 2:
                 play("custom");
             case 3:
+                topScores = scoreService.getTopScores(game);
                 gameUI.showHighScores(topScores);
                 break;
             case 4:

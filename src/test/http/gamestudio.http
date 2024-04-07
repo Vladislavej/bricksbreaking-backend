@@ -1,0 +1,44 @@
+### ADD NEW SCORE
+POST http://localhost:8080/api/score
+Content-Type: application/json
+
+{
+  "game": "bricksbreaking",
+  "player": "HttpTest",
+  "points": 255,
+  "playedOn": "2024-04-01T12:40:33.458"
+}
+
+### GET TOP SCORES
+GET http://localhost:8080/api/score/bricksbreaking
+
+### SUBMIT A RATING
+POST http://localhost:8080/api/rating
+Content-Type: application/json
+
+{
+"game": "bricksbreaking",
+"player": "HttpTest",
+"rating": 5,
+"ratedOn": "2024-04-01T12:40:33.458"
+}
+
+### AVERAGE RATING REQUEST
+GET http://localhost:8080/api/rating/bricksbreaking
+
+### GET RATING OF PLAYER
+GET http://localhost:8080/api/rating/bricksbreaking/HttpTest
+
+### POST A NEW COMMENT
+POST http://localhost:8080/api/comment
+Content-Type: application/json
+
+{
+  "game": "bricksbreaking",
+  "player": "HttpTest",
+  "comment": "HttpTest",
+  "commentedOn": "2024-04-01T12:40:33.458"
+}
+
+### GET COMMENTS REQUEST
+GET http://localhost:8080/api/comment/bricksbreaking

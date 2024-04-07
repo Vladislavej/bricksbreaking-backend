@@ -1,12 +1,14 @@
 package sk.tuke.gamestudio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.entity.Comment;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Service
 public class CommentServiceRestClient implements CommentService{
 
     @Autowired
@@ -15,12 +17,19 @@ public class CommentServiceRestClient implements CommentService{
 
     @Override
     public void addComment(Comment comment) throws CommentException {
-        restTemplate.postForEntity(url,comment,Comment.class);
+        try {
+            restTemplate.postForEntity(url, comment, Comment.class);
+        } catch (Exception e) {
+            throw new CommentException("addComment", e);
+        }
     }
-
     @Override
     public List<Comment> getComments(String game) throws CommentException {
-        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Comment[].class).getBody());
+        try {
+            return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Comment[].class).getBody());
+        } catch (Exception e) {
+            throw new CommentException("getComments", e);
+        }
     }
 
     @Override
