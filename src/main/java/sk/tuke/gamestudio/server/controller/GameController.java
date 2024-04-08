@@ -10,6 +10,6 @@ public class GameController {
 
     @RequestMapping
     public String bricksbreaking() {
-        return "index";
+        return "bricksbreaking";
     }
 }
