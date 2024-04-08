@@ -1,4 +1,4 @@
-### ADD NEW SCORE
+### ADD NEW SCORE -------------------------------------------------------------------------
 POST http://localhost:8080/api/score
 Content-Type: application/json
 
@@ -9,10 +9,10 @@ Content-Type: application/json
   "playedOn": "2024-04-01T12:40:33.458"
 }
 
-### GET TOP SCORES
+### GET TOP SCORES -------------------------------------------------------------------------
 GET http://localhost:8080/api/score/bricksbreaking
 
-### SUBMIT A RATING
+### SUBMIT A RATING -------------------------------------------------------------------------
 POST http://localhost:8080/api/rating
 Content-Type: application/json
 
@@ -23,13 +23,13 @@ Content-Type: application/json
 "ratedOn": "2024-04-01T12:40:33.458"
 }
 
-### AVERAGE RATING REQUEST
+### AVERAGE RATING REQUEST -------------------------------------------------------------------------
 GET http://localhost:8080/api/rating/bricksbreaking
 
-### GET RATING OF PLAYER
+### GET RATING OF PLAYER -------------------------------------------------------------------------
 GET http://localhost:8080/api/rating/bricksbreaking/HttpTest
 
-### POST A NEW COMMENT
+### POST A NEW COMMENT -------------------------------------------------------------------------
 POST http://localhost:8080/api/comment
 Content-Type: application/json
 
@@ -40,5 +40,5 @@ Content-Type: application/json
   "commentedOn": "2024-04-01T12:40:33.458"
 }
 
-### GET COMMENTS REQUEST
+### GET COMMENTS REQUEST -------------------------------------------------------------------------
 GET http://localhost:8080/api/comment/bricksbreaking

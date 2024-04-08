@@ -312,7 +312,7 @@
 
                 int rating = Integer.parseInt(input);
 
-                if(rating > 5 || rating < 0) { throw new InputMismatchException("Rating out of bounds"); }
+                if(rating > 5 || rating < 1) { throw new InputMismatchException("Rating out of bounds"); }
                 System.out.println(GREEN_UNDERLINED + "💚Thank you for rating💚" + ANSI_RESET);
                 waitConsole(1000);
                 return rating;
