@@ -1,1 +1,4 @@
 /.idea/
+/src/main/resources/frontend/node_modules/
+/frontend/node_modules/
+/target/
