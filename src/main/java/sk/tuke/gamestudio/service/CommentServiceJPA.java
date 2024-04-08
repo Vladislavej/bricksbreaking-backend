@@ -15,6 +15,7 @@ public class CommentServiceJPA implements CommentService{
 
     @Override
     public void addComment(Comment comment) throws ScoreException {
+        if(comment.getComment().isEmpty()) { throw new CommentException("Empty comment"); }
         entityManager.persist(comment);
     }
 

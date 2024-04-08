@@ -15,6 +15,9 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public void setRating(Rating rating) throws RatingException {
+        if(rating.getRating() > 5 || rating.getRating() < 1) {
+            throw new RatingException("Rating out of bounds");
+        }
         if(getRating(rating.getGame(),rating.getPlayer())== 0) {
             entityManager.persist(rating);
         }
@@ -31,13 +34,11 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getAverageRating(String game) throws RatingException {
-        Object result = entityManager.createQuery("SELECT AVG(r.rating) FROM Rating r WHERE r.game=:game")
-                .setParameter("game", game)
-                .getSingleResult();
-        if (result != null) {
-            double averageRating = ((Number) result).doubleValue();
-            return (int) Math.round(averageRating);
-        } else {
+        try{
+            Query query =  entityManager.createQuery("select avg(r.rating) from Rating r where r.game = :game")
+                    .setParameter("game",game);
+            return ((Number) query.getSingleResult()).intValue();
+        }catch(Exception e){
             return 0;
         }
     }
@@ -46,17 +47,10 @@ public class RatingServiceJPA implements RatingService{
     @Override
     public int getRating(String game, String player) throws RatingException {
         try {
-            Object result = entityManager.createQuery("SELECT r.rating FROM Rating r WHERE r.game =:game AND r.player =:player")
-                    .setParameter("game", game)
-                    .setParameter("player", player)
-                    .getSingleResult();
-            if (result != null) {
-                double rating = ((Number) result).doubleValue();
-                return (int) Math.round(rating);
-            } else {
-                return 0;
-            }
-        } catch (NoResultException e) {
+            Query query = entityManager.createQuery("select r.rating from Rating r where r.game = :game AND r.player = :player")
+                    .setParameter("game", game).setParameter("player", player);
+            return ((Number) query.getSingleResult()).intValue();
+        }catch (Exception e){
             return 0;
         }
     }
