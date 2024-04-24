@@ -7,6 +7,7 @@ import sk.tuke.gamestudio.service.RatingService;
 
 @RestController
 @RequestMapping("/api/rating")
+@CrossOrigin(origins = "http://localhost:3000") // Update with your frontend origin
 public class RatingServiceRest {
     @Autowired
     private RatingService ratingService;

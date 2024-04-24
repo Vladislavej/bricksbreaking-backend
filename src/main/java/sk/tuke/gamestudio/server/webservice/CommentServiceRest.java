@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comment")
+@CrossOrigin(origins = "http://localhost:3000") // Update with your frontend origin
 public class CommentServiceRest {
     @Autowired
     private CommentService commentService;

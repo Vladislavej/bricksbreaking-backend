@@ -5,11 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/bricksbreaking")
 public class GameController {
 
-    @RequestMapping
+    @RequestMapping("/bricksbreaking")
     public String bricksbreaking() {
-        return "bricksbreaking";
+        return "index";
     }
 }
