@@ -11,11 +11,10 @@ public class BricksBreakingRest {
     private WebGameManager gameManager = new WebGameManager();
     @GetMapping
     public Field getField() {
-        gameManager.prepareGame("classic");
         return gameManager.getField();
     }
 
-    @GetMapping("/newGame")
+    @GetMapping("/newgame")
     public Field newGame() {
         gameManager.play("classic");
         return gameManager.getField();
