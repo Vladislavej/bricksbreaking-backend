@@ -29,4 +29,7 @@ public class GameStudioServer {
     public CommentService commentService() {
         return new CommentServiceJPA();
     }
+
+    @Bean
+    public AuthenticationService authenticationService() { return new AuthenticationServiceJPA(); }
 }

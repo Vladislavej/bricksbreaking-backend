@@ -2,6 +2,8 @@ package sk.tuke.gamestudio.game;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 public class WebGameManager {
     @Getter
     private Field field;
@@ -13,11 +15,31 @@ public class WebGameManager {
 
     public WebGameManager() {
     }
-    public void prepareGame(String gameMode) {
+    public void prepareGame(int gameMode) {
+        int rows = 10;
+        int cols = 10;
+
+        switch (gameMode) {
+            case 0:
+                rows = 5;
+                cols = 5;
+                numColors = 3;
+                break;
+            case 1:
+                rows = 10;
+                cols = 10;
+                numColors = 4;
+                break;
+            case 2:
+                rows = 20;
+                cols = 20;
+                numColors = 6;
+                break;
+        }
+
         field = null;
         while (field == null) {
-            field = new Field(10,10);
-            numColors = 4;
+            field = new Field(rows,cols);
         }
         this.field.generate(numColors);
         lives = 3;
@@ -26,7 +48,7 @@ public class WebGameManager {
         score = 0;
         field.setGameState(GameState.PLAYING);
     }
-    public void play(String gameMode) {
+    public void play(int gameMode) {
         prepareGame(gameMode);
     }
 
@@ -44,7 +66,11 @@ public class WebGameManager {
         field.breakTile(x, y);
 
         calculateStats();
-        field.unite();
+
+        for (int i = 0; i < field.getCols(); i++) {
+            field.unite();
+        }
+
         field.updateGameState();
     }
 }

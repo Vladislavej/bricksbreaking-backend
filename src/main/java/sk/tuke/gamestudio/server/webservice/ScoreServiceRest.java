@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/score")
-@CrossOrigin(origins = "http://localhost:3000") // Update with your frontend origin
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.56:3000"})
 public class ScoreServiceRest {
 
     @Autowired
