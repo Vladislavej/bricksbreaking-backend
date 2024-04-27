@@ -35,5 +35,4 @@ public class AuthenticationServiceJPA implements AuthenticationService{
             return false;
         }
     }
-
 }
