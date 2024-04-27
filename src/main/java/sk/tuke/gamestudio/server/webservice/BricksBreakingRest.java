@@ -37,4 +37,7 @@ public class BricksBreakingRest {
     public int getLives(){
         return gameManager.getLives();
     }
+
+    @GetMapping("/gamestate")
+    public GameState getGameState(){ return gameManager.getField().getGameState(); }
 }
