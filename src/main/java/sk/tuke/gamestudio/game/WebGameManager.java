@@ -16,23 +16,17 @@ public class WebGameManager {
     public WebGameManager() {
     }
     public void prepareGame(int gameMode) {
-        int rows = 10;
-        int cols = 10;
+        int rows = 15;
+        int cols = 15;
 
         switch (gameMode) {
             case 0:
-                rows = 5;
-                cols = 5;
                 numColors = 3;
                 break;
             case 1:
-                rows = 10;
-                cols = 10;
                 numColors = 4;
                 break;
             case 2:
-                rows = 20;
-                cols = 20;
                 numColors = 6;
                 break;
         }
