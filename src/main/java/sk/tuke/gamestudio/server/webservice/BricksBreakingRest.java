@@ -21,6 +21,12 @@ public class BricksBreakingRest {
         return gameManager.getField();
     }
 
+    @GetMapping("/customgame")
+    public Field customGame(@RequestParam int numColors, @RequestParam int rows, @RequestParam int cols) {
+        gameManager.prepareGame(3, rows, cols, numColors);
+        return gameManager.getField();
+    }
+
     @GetMapping("/breakbrick")
     public void breakBrick(@RequestParam int x, @RequestParam int y) {
         if(gameManager.getField().getGameState() == GameState.PLAYING) {

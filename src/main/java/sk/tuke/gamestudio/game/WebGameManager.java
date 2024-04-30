@@ -15,20 +15,31 @@ public class WebGameManager {
 
     public WebGameManager() {
     }
-    public void prepareGame(int gameMode) {
-        int rows = 15;
-        int cols = 15;
+    public void prepareGame(int gameMode, int rowsPar, int colsPar, int numColorsPar) {
+        int rows = 5;
+        int cols = 5;
+        int numColors = 2;
 
         switch (gameMode) {
             case 0:
+                rows = 10;
+                cols = 10;
                 numColors = 3;
                 break;
             case 1:
+                rows = 15;
+                cols = 15;
                 numColors = 4;
                 break;
             case 2:
+                rows = 20;
+                cols = 20;
                 numColors = 6;
                 break;
+            case 3:
+                rows = rowsPar;
+                cols = colsPar;
+                numColors = numColorsPar;
         }
 
         field = null;
@@ -43,7 +54,7 @@ public class WebGameManager {
         field.setGameState(GameState.PLAYING);
     }
     public void play(int gameMode) {
-        prepareGame(gameMode);
+        prepareGame(gameMode, 0 ,0 ,0);
     }
 
     public void calculateStats() {
