@@ -4,14 +4,11 @@ import lombok.Getter;
 
 import java.util.Objects;
 
+@Getter
 public class WebGameManager {
-    @Getter
     private Field field;
-    @Getter
     private int score;
-    @Getter
     private int lives;
-    private int numColors;
 
     public WebGameManager() {
     }
