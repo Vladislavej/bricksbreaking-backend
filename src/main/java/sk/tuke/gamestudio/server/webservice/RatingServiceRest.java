@@ -7,7 +7,7 @@ import sk.tuke.gamestudio.service.RatingService;
 
 @RestController
 @RequestMapping("/api/rating")
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.56:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.56:3000", "http://192.168.33.12:3000/"})
 public class RatingServiceRest {
     @Autowired
     private RatingService ratingService;
